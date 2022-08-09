@@ -11,6 +11,13 @@ dependencies:
   flutter: 
     sdk: flutter
   on_audio_query: ^2.6.1
+  we_slide: ^2.3.0
+  palette_generator: ^0.3.3+1
+  just_audio: ^0.9.28
+  mini_music_visualizer: ^1.0.2
+  rxdart: ^0.27.5
+  audio_video_progress_bar: ^0.10.0
+  marquee: ^2.2.3
 
 dev_dependencies: 
   flutter_lints: ^2.0.0
@@ -19,4 +26,6 @@ dev_dependencies:
 
 flutter: 
   uses-material-design: true
+  assets:
+    - assets/images/
 
