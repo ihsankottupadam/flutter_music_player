@@ -55,12 +55,12 @@ class SongTile extends StatelessWidget {
           children: [
             Obx(
               () => Get.find<PlayerController>().currentSongId.value == song.id
-                  ? MiniMusicVisualizer(
+                  ? const MiniMusicVisualizer(
                       color: Colors.blue,
                       width: 4,
                       height: 15,
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
             ),
             IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
           ],

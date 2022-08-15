@@ -7,17 +7,18 @@ import 'package:marquee/marquee.dart';
 import 'package:music_player/app/widgets/bg_container.dart';
 import 'package:music_player/app/widgets/gradient_container.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:we_slide/we_slide.dart';
 
 import '../../../data/models/position_data.dart';
 import '../controllers/player_controller.dart';
 
 class PlayerScreenView extends GetWidget<PlayerController> {
-  const PlayerScreenView({Key? key, required this.song}) : super(key: key);
-  final SongModel song;
+  const PlayerScreenView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      direction: DismissDirection.down,
+      direction: DismissDirection.none,
       key: const Key('playScreen'),
       // background: Container(color: Colors.transparent),
       onDismissed: (direction) {
@@ -33,7 +34,8 @@ class PlayerScreenView extends GetWidget<PlayerController> {
                 elevation: 0,
                 leading: IconButton(
                     onPressed: () {
-                      Get.back();
+                      //Get.back();
+                      Get.find<WeSlideController>().hide();
                     },
                     icon: const Icon(Icons.keyboard_arrow_down_rounded),
                     tooltip: 'Back'),
@@ -100,12 +102,12 @@ class ArtWidget extends GetWidget<PlayerController> {
                     artworkWidth: height,
                     type: ArtworkType.AUDIO,
                     artworkFit: BoxFit.cover,
-                    artworkBorder: BorderRadius.circular(0),
+                    artworkBorder: BorderRadius.circular(10),
                     nullArtworkWidget: Container(
                       width: height,
                       height: height,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
+                        borderRadius: BorderRadius.circular(10),
                         color: const Color(0x15ffffff),
                       ),
                       child: Icon(

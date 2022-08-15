@@ -7,13 +7,17 @@ class LibraryController extends GetxController {
   List<SongModel> songs = [];
   @override
   void onInit() {
-    requestPermission();
+    _requestPermission();
     super.onInit();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   OnAudioQuery get audioQuery => _audioQuery;
-  requestPermission() async {
-    // Web platform don't support permissions methods.
+  _requestPermission() async {
     if (!kIsWeb) {
       bool permissionStatus = await _audioQuery.permissionsStatus();
       if (!permissionStatus) {

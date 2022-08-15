@@ -16,32 +16,67 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    final WeSlideController controller = WeSlideController();
-    final double panelMinSize = 125.0;
+    WeSlideController slideController = controller.slideController;
+    const double panelMinSize = 120;
     final double panelMaxSize = MediaQuery.of(context).size.height;
     return BgContainer(
       child: GradientContainer(
         child: Scaffold(
+          backgroundColor: Colors.transparent,
           body: WeSlide(
             backgroundColor: Colors.transparent,
-            controller: controller,
+            controller: slideController,
             panelMinSize: panelMinSize,
             panelMaxSize: panelMaxSize,
             overlayOpacity: 0.9,
             overlay: true,
             isDismissible: true,
-            body: const LibraryView(),
+            body: NestedSCreen(),
             panelHeader: MiniPlayer(
               onTap: () {
-                controller.show();
+                slideController.show();
               },
             ),
-            panel: MiniPlayer(onTap: () {}),
+            panel: const PlayerScreenView(),
             footer: const BottomBar(),
-            blur: true,
           ),
         ),
       ),
     );
+  }
+}
+
+class NestedSCreen extends StatelessWidget {
+  NestedSCreen({
+    Key? key,
+  }) : super(key: key);
+  final _libraryKey = GlobalKey<NavigatorState>();
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: _handleBack,
+      child: Navigator(
+          key: _libraryKey,
+          onGenerateRoute: (route) => MaterialPageRoute(
+                settings: route,
+                builder: (context) => const LibraryView(),
+              )),
+    );
+  }
+
+  Future<bool> _handleBack() async {
+    WeSlideController slideController = Get.find<WeSlideController>();
+    if (slideController.isOpened) {
+      slideController.hide();
+      return false;
+    }
+    if (_libraryKey.currentState != null &&
+        _libraryKey.currentState!.canPop()) {
+      _libraryKey.currentState!.pop();
+      return false;
+    }
+    print(Get.find<WeSlideController>().isOpened);
+    print('back.............');
+    return false;
   }
 }
