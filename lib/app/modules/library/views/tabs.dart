@@ -16,10 +16,13 @@ class SongsTab extends GetWidget<LibraryController> {
   final Future<List<SongModel>> query;
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<LibraryController>(builder: (_) {
+    print('SongsTabRebuilded');
+    return GetBuilder<LibraryController>(builder: (context) {
+      print('GETBuilder called');
       return FutureBuilder<List<SongModel>>(
           future: query,
           builder: (BuildContext context, snapshot) {
+            print('FutureBuilder called');
             if (snapshot.data == null) {
               return const Center(child: CircularProgressIndicator());
             }
@@ -29,6 +32,7 @@ class SongsTab extends GetWidget<LibraryController> {
             }
             List<SongModel> songs = snapshot.data!;
             controller.songs = songs;
+
             return ListView.builder(
               physics: const BouncingScrollPhysics(),
               itemCount: songs.length,

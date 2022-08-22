@@ -15,6 +15,7 @@ class AlbumTile extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: InkWell(
+        borderRadius: BorderRadius.circular(10),
         onTap: () {
           // Get.to(() =>
           //     AlbumScreenView(AudiosFromType.ALBUM_ID, album.id, album.album));
@@ -29,18 +30,30 @@ class AlbumTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                child: GridTileBar(
-                  backgroundColor: const Color(0x25000000),
-                  title: Text(album.album),
-                  subtitle: Text(
-                    '${album.numOfSongs} Songs',
-                    style: TextStyle(
-                        fontSize: 12, color: Colors.white.withOpacity(0.5)),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.white.withOpacity(0.2),
+                        const Color(0x00ffffff)
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomCenter,
+                    ),
                   ),
-                  trailing: MiniPlayButton(
-                    onPress: () {
-                      print('Go.......');
-                    },
+                  child: GridTileBar(
+                    backgroundColor: const Color(0x22000000),
+                    title: Text(album.album),
+                    subtitle: Text(
+                      '${album.numOfSongs} Songs',
+                      style: TextStyle(
+                          fontSize: 12, color: Colors.white.withOpacity(0.5)),
+                    ),
+                    trailing: MiniPlayButton(
+                      onPress: () {
+                        print('Go.......');
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -57,8 +70,9 @@ class AlbumTile extends StatelessWidget {
               padding: const EdgeInsets.only(top: 45),
               alignment: Alignment.topCenter,
               decoration: BoxDecoration(
+                border: Border.all(color: const Color(0x22ffffff)),
                 borderRadius: BorderRadius.circular(10),
-                color: const Color(0x15ffffff),
+                color: const Color(0x22000000),
               ),
               child: const Icon(
                 Icons.album,

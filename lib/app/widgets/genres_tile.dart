@@ -31,8 +31,15 @@ class GenreTile extends StatelessWidget {
                 filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                 child: DecoratedBox(
                   decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white.withOpacity(0.1)),
-                      borderRadius: BorderRadius.circular(10)),
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.white.withOpacity(0.2),
+                        const Color(0x00ffffff)
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
                   child: GridTileBar(
                     backgroundColor: const Color(0x11000000),
                     title: Text(genre.genre),
@@ -64,7 +71,7 @@ class GenreTile extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border.all(color: const Color(0x22ffffff)),
                 borderRadius: BorderRadius.circular(10),
-                color: const Color(0x09ffffff),
+                color: const Color(0x22000000),
               ),
               child: const Icon(
                 Icons.music_note,

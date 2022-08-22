@@ -83,6 +83,9 @@ class ArtWidget extends GetWidget<PlayerController> {
       child: StreamBuilder(
           stream: controller.player.currentIndexStream,
           builder: (context, snapshot) {
+            if (controller.songQueue.isEmpty) {
+              return const SizedBox();
+            }
             return SizedBox(
               height: height + height * .2,
               child: Column(
@@ -108,7 +111,17 @@ class ArtWidget extends GetWidget<PlayerController> {
                       height: height,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: const Color(0x15ffffff),
+                        //color: const Color(0x15ffffff),
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color(0x55ffffff),
+                            Color(0x15ffffff),
+                            Color(0x33000000)
+                          ],
+                          // stops: [0.1, 1],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomCenter,
+                        ),
                       ),
                       child: Icon(
                         Icons.music_note,
@@ -140,6 +153,9 @@ class ControllButtons extends GetWidget<PlayerController> {
             StreamBuilder(
                 stream: player.currentIndexStream,
                 builder: (context, snapshot) {
+                  if (controller.songQueue.isEmpty) {
+                    return const SizedBox();
+                  }
                   final currSong =
                       controller.songQueue[controller.currentIndex];
                   return Column(

@@ -17,6 +17,7 @@ class PlayerController extends GetxController {
   int _currentIndex = 0;
   RxInt currentSongId = 0.obs;
   int get currentIndex => _currentIndex;
+  RxBool showMiniPlayer = false.obs;
   @override
   void onInit() {
     super.onInit();
@@ -31,6 +32,9 @@ class PlayerController extends GetxController {
 
   setPlaylist(List<SongModel> songs, {int initialIndex = 0}) {
     songQueue = songs;
+    if (showMiniPlayer.value == false) {
+      showMiniPlayer.value = true;
+    }
     _currentIndex = initialIndex;
     playlist = createPlaylist(songs);
     player.setAudioSource(

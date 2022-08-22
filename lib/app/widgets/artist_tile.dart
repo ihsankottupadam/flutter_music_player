@@ -16,6 +16,7 @@ class ArtistTile extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: InkWell(
+        borderRadius: BorderRadius.circular(10),
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (contxt) => AlbumScreenView(AudiosFromType.ARTIST_ID,
@@ -28,18 +29,30 @@ class ArtistTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                child: GridTileBar(
-                  backgroundColor: const Color(0x22000000),
-                  title: Text(artistModel.artist),
-                  subtitle: Text(
-                    '${artistModel.numberOfTracks} Songs',
-                    style: TextStyle(
-                        fontSize: 12, color: Colors.white.withOpacity(0.5)),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.white.withOpacity(0.2),
+                        const Color(0x00ffffff)
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomCenter,
+                    ),
                   ),
-                  trailing: MiniPlayButton(
-                    onPress: () {
-                      print('Go.......');
-                    },
+                  child: GridTileBar(
+                    backgroundColor: const Color(0x22000000),
+                    title: Text(artistModel.artist),
+                    subtitle: Text(
+                      '${artistModel.numberOfTracks} Songs',
+                      style: TextStyle(
+                          fontSize: 12, color: Colors.white.withOpacity(0.5)),
+                    ),
+                    trailing: MiniPlayButton(
+                      onPress: () {
+                        print('Go.......');
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -56,7 +69,7 @@ class ArtistTile extends StatelessWidget {
               padding: const EdgeInsets.only(top: 45),
               alignment: Alignment.topCenter,
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.white.withOpacity(0.2)),
+                border: Border.all(color: const Color(0x22ffffff)),
                 borderRadius: BorderRadius.circular(10),
                 color: const Color(0x22000000),
               ),

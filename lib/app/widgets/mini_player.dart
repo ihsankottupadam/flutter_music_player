@@ -44,8 +44,12 @@ class MiniPlayer extends GetWidget<PlayerController> {
                               width: 60,
                               height: 60,
                               decoration: const BoxDecoration(
-                                color: Color(0x15ffffff),
-                              ),
+                                  // color: Color(0x15ffffff),
+                                  gradient: LinearGradient(
+                                colors: [Color(0x55ffffff), Color(0x15ffffff)],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomCenter,
+                              )),
                               child: const Icon(
                                 Icons.music_note,
                                 color: Color(0xFF5AB2FA),

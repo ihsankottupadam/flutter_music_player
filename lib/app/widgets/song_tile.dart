@@ -14,7 +14,6 @@ class SongTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      //splashColor: Color(0x552196F3),
       borderRadius: BorderRadius.circular(10),
       child: ListTile(
         title: Text(
@@ -42,7 +41,12 @@ class SongTile extends StatelessWidget {
             height: 50,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(radius),
-              color: const Color(0x15ffffff),
+              //color: const Color(0x15ffffff),
+              gradient: const LinearGradient(
+                colors: [Color(0x33ffffff), Color(0x33000000)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomCenter,
+              ),
             ),
             child: const Icon(
               Icons.music_note,
