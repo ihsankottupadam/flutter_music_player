@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:marquee/marquee.dart';
 import 'package:music_player/app/widgets/bg_container.dart';
+import 'package:music_player/app/widgets/favorite_button.dart';
 import 'package:music_player/app/widgets/gradient_container.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:we_slide/we_slide.dart';
@@ -80,12 +81,13 @@ class ArtWidget extends GetWidget<PlayerController> {
   @override
   Widget build(BuildContext context) {
     return Flexible(
-      child: StreamBuilder(
-          stream: controller.player.currentIndexStream,
+      child: StreamBuilder<SongModel>(
+          stream: controller.currentSong.stream,
           builder: (context, snapshot) {
             if (controller.songQueue.isEmpty) {
               return const SizedBox();
             }
+            SongModel currSong = controller.currentSong.value;
             return SizedBox(
               height: height + height * .2,
               child: Column(
@@ -100,7 +102,7 @@ class ArtWidget extends GetWidget<PlayerController> {
                     ),
                   ),
                   QueryArtworkWidget(
-                    id: controller.songQueue[controller.currentIndex].id,
+                    id: currSong.id,
                     artworkHeight: height,
                     artworkWidth: height,
                     type: ArtworkType.AUDIO,
@@ -150,14 +152,13 @@ class ControllButtons extends GetWidget<PlayerController> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            StreamBuilder(
-                stream: player.currentIndexStream,
+            StreamBuilder<SongModel>(
+                stream: controller.currentSong.stream,
                 builder: (context, snapshot) {
-                  if (controller.songQueue.isEmpty) {
+                  if (!snapshot.hasData) {
                     return const SizedBox();
                   }
-                  final currSong =
-                      controller.songQueue[controller.currentIndex];
+                  final currSong = snapshot.data!;
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -182,7 +183,18 @@ class ControllButtons extends GetWidget<PlayerController> {
                     ],
                   );
                 }),
-            const SizedBox(height: 10),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+              IconButton(onPressed: () {}, icon: const Icon(Icons.timer_sharp)),
+              IconButton(
+                  onPressed: () {}, icon: const Icon(Icons.playlist_add)),
+              StreamBuilder(
+                  stream: controller.currentSong.stream,
+                  builder: (context, snapshot) {
+                    return FavoriteButton(
+                      song: controller.songQueue[controller.currentIndex],
+                    );
+                  })
+            ]),
             StreamBuilder<PositionData>(
               stream: controller.positionDataStream,
               builder: (context, snapshot) {

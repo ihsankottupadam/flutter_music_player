@@ -15,6 +15,7 @@ class PlayerController extends GetxController {
   late ConcatenatingAudioSource playlist;
   // ignore: prefer_final_fields
   int _currentIndex = 0;
+  Rx<SongModel> currentSong = SongModel({'_id': 0}).obs;
   RxInt currentSongId = 0.obs;
   int get currentIndex => _currentIndex;
   RxBool showMiniPlayer = false.obs;
@@ -23,9 +24,16 @@ class PlayerController extends GetxController {
     super.onInit();
     player.currentIndexStream.listen((index) {
       if (index != null) {
-        currentSongId.value = songQueue[index].id;
+        // currentSongId.value = songQueue[index].id;
         _currentIndex = index;
         _updateBgColor();
+      }
+    });
+    player.sequenceStateStream.listen((event) {
+      if (event != null &&
+          songQueue[event.currentIndex].id != currentSongId.value) {
+        currentSongId.value = songQueue[event.currentIndex].id;
+        currentSong.value = songQueue[event.currentIndex];
       }
     });
   }
@@ -45,6 +53,17 @@ class PlayerController extends GetxController {
     player.play();
   }
 
+  // Stream<SongModel> songChangeStream() async* {
+  //   player.sequenceStateStream.asyncExpand((event) {
+  //     print('stram catched');
+  //     if (songQueue[currentIndex].id != _prevSongId) {
+  //       _prevSongId = currentSongId.value;
+  //       currentSongId.value = songQueue[currentIndex].id;
+  //       return Stream.value(songQueue[currentIndex]);
+  //     }
+  //   });
+  // }
+
   Stream<PositionData> get positionDataStream =>
       rx_dart.Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
           player.positionStream,
@@ -55,6 +74,7 @@ class PlayerController extends GetxController {
 
   ConcatenatingAudioSource createPlaylist(List<SongModel> songs) {
     List<AudioSource> audioSorce = [];
+
     for (SongModel song in songs) {
       audioSorce.add(AudioSource.uri(Uri.parse(song.uri!)));
     }

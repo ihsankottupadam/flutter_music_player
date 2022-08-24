@@ -85,8 +85,11 @@ class RecentTab extends GetWidget<LibraryController> {
               return SongTile(
                   song: song,
                   onTap: () {
-                    Get.find<PlayerController>()
-                        .setPlaylist(songs, initialIndex: index);
+                    PlayerController playerController = Get.find();
+                    if (playerController.player.playing) {
+                      playerController.player.stop();
+                    }
+                    playerController.setPlaylist(songs, initialIndex: index);
                     Get.find<WeSlideController>().show();
                     // Navigator.push(
                     //     context,

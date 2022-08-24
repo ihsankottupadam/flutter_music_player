@@ -27,14 +27,17 @@ class MiniPlayer extends GetWidget<PlayerController> {
           child: Row(
             children: [
               Expanded(
-                child: StreamBuilder(
-                    stream: controller.player.currentIndexStream,
-                    builder: (context, _) {
+                child: StreamBuilder<SongModel>(
+                    stream: controller.currentSong.stream,
+                    builder: (context, snapshot) {
+                      if (controller.songQueue.isEmpty) {
+                        return SizedBox();
+                      }
+                      SongModel currSong = controller.currentSong.value;
                       return Row(
                         children: [
                           QueryArtworkWidget(
-                            id: controller
-                                .songQueue[controller.currentIndex].id,
+                            id: currSong.id,
                             artworkHeight: 60,
                             artworkWidth: 60,
                             type: ArtworkType.AUDIO,
@@ -59,11 +62,8 @@ class MiniPlayer extends GetWidget<PlayerController> {
                           ),
                           const SizedBox(width: 5),
                           Expanded(
-                            child: Text(
-                              controller
-                                  .songQueue[controller.currentIndex].title,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                            child: Text(currSong.title,
+                                overflow: TextOverflow.ellipsis),
                           )
                         ],
                       );
@@ -93,10 +93,6 @@ class MiniPlayer extends GetWidget<PlayerController> {
         ),
       ),
     );
-    // return Container(
-    //   color: MyColors.secondary,
-    //   height: 200,
-    // );
   }
 
   Widget _playButton(PlayerState? playerState) {
@@ -129,7 +125,6 @@ class MiniPlayer extends GetWidget<PlayerController> {
   Widget _previousButton() {
     var audioPlayer = controller.player;
     return IconButton(
-      //visualDensity: VisualDensity(horizontal: 0.2, vertical: 0.2),
       padding: EdgeInsets.zero,
       icon: const Icon(Icons.skip_previous),
       onPressed: audioPlayer.hasPrevious ? audioPlayer.seekToPrevious : null,
