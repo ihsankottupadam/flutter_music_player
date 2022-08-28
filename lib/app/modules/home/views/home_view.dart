@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:music_player/app/modules/home/views/favories.dart';
-import 'package:music_player/app/modules/home/views/playlist_screen.dart';
+import 'package:music_player/app/modules/favorites/views/favories.dart';
+import 'package:music_player/app/modules/playlist/views/playlist_screen.dart';
 import 'package:music_player/app/modules/library/views/library_view.dart';
 import 'package:music_player/app/modules/player_screen/controllers/player_controller.dart';
 import 'package:music_player/app/modules/player_screen/views/player_screen_view.dart';
@@ -15,7 +15,7 @@ import '../controllers/home_controller.dart';
 import 'bottom_bar.dart';
 
 class HomeView extends GetView<HomeController> {
-  HomeView({Key? key}) : super(key: key);
+  const HomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +26,7 @@ class HomeView extends GetView<HomeController> {
     return BgContainer(
       child: GradientContainer(
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Colors.transparent,
           body: Obx(
             () {
@@ -59,7 +60,11 @@ class HomeView extends GetView<HomeController> {
 
 class ScreenView extends GetWidget<HomeController> {
   ScreenView({Key? key}) : super(key: key);
-  final screens = [NestedSCreen(), FavoriteScreen(), PlaylistScreen()];
+  final screens = [
+    NavigatorScreen(initialScreen: const LibraryView()),
+    FavoriteScreen(),
+    NavigatorScreen(initialScreen: PlaylistScreen()),
+  ];
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -78,33 +83,25 @@ class ScreenView extends GetWidget<HomeController> {
   }
 }
 
-class NestedSCreen extends StatelessWidget {
-  NestedSCreen({
-    Key? key,
-  }) : super(key: key);
-  final _libraryKey = GlobalKey<NavigatorState>();
+class NavigatorScreen extends StatelessWidget {
+  NavigatorScreen({Key? key, required this.initialScreen}) : super(key: key);
+  final _navigatorKey = GlobalKey<NavigatorState>();
+  final Widget initialScreen;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _handleBack,
       child: Navigator(
-          key: _libraryKey,
+          key: _navigatorKey,
           onGenerateRoute: (route) => MaterialPageRoute(
-                settings: route,
-                builder: (context) => const LibraryView(),
-              )),
+              settings: route, builder: (context) => initialScreen)),
     );
   }
 
   Future<bool> _handleBack() async {
-    // WeSlideController slideController = Get.find<WeSlideController>();
-    // if (slideController.isOpened) {
-    //   slideController.hide();
-    //   return false;
-    // }
-    if (_libraryKey.currentState != null &&
-        _libraryKey.currentState!.canPop()) {
-      _libraryKey.currentState!.pop();
+    if (_navigatorKey.currentState != null &&
+        _navigatorKey.currentState!.canPop()) {
+      _navigatorKey.currentState!.pop();
       return false;
     }
 

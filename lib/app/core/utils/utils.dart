@@ -34,4 +34,25 @@ class Utils {
       ];
     }
   }
+
+  static showSnackBar(
+      {required BuildContext context,
+      required String text,
+      bool isError = false}) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+            content: Text(
+              text,
+              style: const TextStyle(color: Colors.white),
+            ),
+            backgroundColor: isError ? Colors.red : Colors.grey.shade700,
+            behavior: SnackBarBehavior.floating,
+            margin: EdgeInsets.only(
+                bottom: MediaQuery.of(context).size.height - 100,
+                right: 20,
+                left: 20)),
+      );
+  }
 }

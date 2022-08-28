@@ -21,7 +21,7 @@ class MiniPlayer extends GetWidget<PlayerController> {
           decoration: BoxDecoration(
               border:
                   Border.all(width: 0, color: Colors.white.withOpacity(0.2)),
-              color: Colors.black.withOpacity(0.7)),
+              color: Colors.black.withOpacity(0.65)),
           width: double.infinity,
           height: 60,
           child: Row(
@@ -30,8 +30,8 @@ class MiniPlayer extends GetWidget<PlayerController> {
                 child: StreamBuilder<SongModel>(
                     stream: controller.currentSong.stream,
                     builder: (context, snapshot) {
-                      if (controller.songQueue.isEmpty) {
-                        return SizedBox();
+                      if (!controller.hasPlaylist) {
+                        return const SizedBox();
                       }
                       SongModel currSong = controller.currentSong.value;
                       return Row(

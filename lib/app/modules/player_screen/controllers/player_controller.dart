@@ -18,6 +18,7 @@ class PlayerController extends GetxController {
   Rx<SongModel> currentSong = SongModel({'_id': 0}).obs;
   RxInt currentSongId = 0.obs;
   int get currentIndex => _currentIndex;
+  bool get hasPlaylist => songQueue.isNotEmpty;
   RxBool showMiniPlayer = false.obs;
   @override
   void onInit() {
