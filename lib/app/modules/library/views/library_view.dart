@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_player/app/core/values/colors.dart';
 import 'package:music_player/app/modules/library/views/tabs.dart';
+import 'package:music_player/app/modules/player_screen/controllers/player_controller.dart';
+import 'package:music_player/app/routes/app_pages.dart';
+import 'package:music_player/app/widgets/mypopupmenu.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../controllers/library_controller.dart';
@@ -22,6 +25,12 @@ class LibraryView extends GetView<LibraryController> {
             //elevation: 2,
             backgroundColor: Colors.transparent,
             automaticallyImplyLeading: false,
+            actions: [
+              IconButton(
+                  onPressed: () => Get.toNamed(Routes.SEARCH),
+                  icon: const Icon(Icons.search)),
+              _buldMenu()
+            ],
             bottom: const TabBar(
                 indicatorColor: MyColors.secondary,
                 isScrollable: true,
@@ -44,5 +53,18 @@ class LibraryView extends GetView<LibraryController> {
             GenreTab(),
           ])),
     );
+  }
+
+  MyPopupMenu _buldMenu() {
+    return MyPopupMenu(
+        items: [
+          MyPopupItem(id: 0, title: 'Play All', icon: Icons.play_arrow_rounded)
+        ],
+        onItemSelected: (id) {
+          if (id == 0) {
+            final sons = Get.find<LibraryController>().songs;
+            Get.find<PlayerController>().setPlaylist(sons);
+          }
+        });
   }
 }

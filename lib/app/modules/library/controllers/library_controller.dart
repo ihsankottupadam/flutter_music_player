@@ -23,7 +23,6 @@ class LibraryController extends GetxController {
       if (!permissionStatus) {
         await _audioQuery.permissionsRequest();
         update();
-        print('Update called on Library  Contoller....');
       }
     }
   }

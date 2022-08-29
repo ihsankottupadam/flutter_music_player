@@ -5,10 +5,15 @@ import '../../../widgets/mypopupmenu.dart';
 import '../controllers/playlist_helper.dart';
 
 class PlaylistTile extends StatelessWidget {
-  const PlaylistTile({Key? key, required this.playlist, required this.onTap})
+  const PlaylistTile(
+      {Key? key,
+      required this.playlist,
+      required this.onTap,
+      this.showMenu = true})
       : super(key: key);
   final Playlist playlist;
   final VoidCallback onTap;
+  final bool showMenu;
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -19,22 +24,25 @@ class PlaylistTile extends StatelessWidget {
       onTap: () {
         onTap();
       },
-      trailing: MyPopupMenu(
-          items: [
-            MyPopupItem(id: 0, title: 'Delete', icon: Icons.delete_rounded),
-            MyPopupItem(id: 1, title: 'Rename', icon: Icons.edit)
-          ],
-          onItemSelected: (id) {
-            switch (id) {
-              case 0:
-                playlist.delete();
-                break;
-              case 1:
-                PlaylistHelper().renamePlaylist(context, playlist);
-                break;
-              default:
-            }
-          }),
+      trailing: showMenu
+          ? MyPopupMenu(
+              items: [
+                  MyPopupItem(
+                      id: 0, title: 'Delete', icon: Icons.delete_rounded),
+                  MyPopupItem(id: 1, title: 'Rename', icon: Icons.edit)
+                ],
+              onItemSelected: (id) {
+                switch (id) {
+                  case 0:
+                    playlist.delete();
+                    break;
+                  case 1:
+                    PlaylistHelper().renamePlaylist(context, playlist);
+                    break;
+                  default:
+                }
+              })
+          : null,
     );
   }
 }

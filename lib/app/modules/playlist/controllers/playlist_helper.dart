@@ -118,6 +118,7 @@ class PlaylistHelper {
                                         itemBuilder: (context, index) {
                                           return PlaylistTile(
                                             playlist: playlists[index],
+                                            showMenu: false,
                                             onTap: () {
                                               if (playlists[index]
                                                   .addSong(song)) {

@@ -9,6 +9,7 @@ abstract class Routes {
   static const LIBRARY = _Paths.LIBRARY;
   static const PLAYER_SCREEN = _Paths.PLAYER_SCREEN;
   static const ALBUM_SCREEN = _Paths.ALBUM_SCREEN;
+  static const SEARCH = _Paths.SEARCH;
 }
 
 abstract class _Paths {
@@ -17,4 +18,5 @@ abstract class _Paths {
   static const LIBRARY = '/library';
   static const PLAYER_SCREEN = '/player-screen';
   static const ALBUM_SCREEN = '/album-screen';
+  static const SEARCH = '/search';
 }

@@ -14,7 +14,7 @@ class MyPopupMenu extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       color: Colors.grey.shade900.withOpacity(.9),
       elevation: 1,
-      position: PopupMenuPosition.under,
+      //position: PopupMenuPosition.under,
       itemBuilder: (context) {
         return items
             .map((item) => PopupMenuItem(
