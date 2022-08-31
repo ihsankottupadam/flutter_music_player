@@ -27,7 +27,6 @@ class PlayerController extends GetxController {
       if (index != null) {
         // currentSongId.value = songQueue[index].id;
         _currentIndex = index;
-        _updateBgColor();
       }
     });
     player.sequenceStateStream.listen((event) {
@@ -35,6 +34,7 @@ class PlayerController extends GetxController {
           songQueue[event.currentIndex].id != currentSongId.value) {
         currentSongId.value = songQueue[event.currentIndex].id;
         currentSong.value = songQueue[event.currentIndex];
+        _updateBgColor();
       }
     });
   }
@@ -53,17 +53,6 @@ class PlayerController extends GetxController {
     player.androidAudioSessionId;
     player.play();
   }
-
-  // Stream<SongModel> songChangeStream() async* {
-  //   player.sequenceStateStream.asyncExpand((event) {
-  //     print('stram catched');
-  //     if (songQueue[currentIndex].id != _prevSongId) {
-  //       _prevSongId = currentSongId.value;
-  //       currentSongId.value = songQueue[currentIndex].id;
-  //       return Stream.value(songQueue[currentIndex]);
-  //     }
-  //   });
-  // }
 
   Stream<PositionData> get positionDataStream =>
       rx_dart.Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
@@ -88,9 +77,9 @@ class PlayerController extends GetxController {
         songQueue[currentIndex].id, ArtworkType.AUDIO,
         format: ArtworkFormat.JPEG);
     if (image != null) {
-      final colors =
-          await Utils.getColorsfromImage(imageProvider: MemoryImage(image));
-      uiController.setbgColor(colors.elementAt(0).withOpacity(0.8));
+      final color =
+          await Utils.getColorfromImage(imageProvider: MemoryImage(image));
+      uiController.setbgColor(color.withOpacity(0.8));
     } else {
       uiController.setToDefaultColor();
     }

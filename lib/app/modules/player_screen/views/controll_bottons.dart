@@ -86,6 +86,10 @@ class ControllButtons extends GetWidget<PlayerController> {
                   bufferedBarColor: Colors.transparent,
                   barHeight: 4,
                   thumbRadius: 6,
+                  onDragUpdate: (val) {
+                    // player.seek(val.timeStamp);
+                    print(val.timeStamp);
+                  },
                   thumbGlowRadius: 15,
                   onSeek: (duration) {
                     player.seek(duration);

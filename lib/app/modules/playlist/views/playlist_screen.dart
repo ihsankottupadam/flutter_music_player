@@ -4,6 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:music_player/app/data/models/playlist.dart';
 import 'package:music_player/app/modules/playlist/views/item_screen.dart';
 import 'package:music_player/app/modules/playlist/widgets/playlist_tile.dart';
+import 'package:music_player/app/widgets/emptyview.dart';
 
 import '../controllers/playlist_helper.dart';
 
@@ -41,6 +42,9 @@ class PlaylistScreen extends StatelessWidget {
                 valueListenable: PlaylistHelper.box.listenable(),
                 builder: (context, Box<Playlist> box, _) {
                   List<Playlist> playlists = box.values.toList();
+                  if (playlists.isEmpty) {
+                    return const EmptyViewN(text: 'No Playlist');
+                  }
                   return ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,

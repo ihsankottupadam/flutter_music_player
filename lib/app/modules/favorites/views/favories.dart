@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_player/app/modules/favorites/controllers/favorites_controller.dart';
+import 'package:music_player/app/widgets/emptyview.dart';
 
 import 'package:music_player/app/widgets/mypopupmenu.dart';
 import 'package:music_player/app/widgets/empty_view.dart';
@@ -29,7 +30,10 @@ class FavoriteScreen extends StatelessWidget {
         PlayerController playerController = Get.find();
         WeSlideController slideController = Get.find();
         if (favSongs.isEmpty) {
-          return const EmptyView('Nothing', 'to show', 'go and add somthing');
+          return const EmptyViewN(
+            text: 'No Songs',
+            bottom: 'Found',
+          );
         }
         return ListView.builder(
           physics: const BouncingScrollPhysics(),

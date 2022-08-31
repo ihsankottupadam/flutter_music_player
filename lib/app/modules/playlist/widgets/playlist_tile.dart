@@ -18,7 +18,7 @@ class PlaylistTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      leading: const Icon(Icons.featured_play_list),
+      leading: const Icon(Icons.queue_music_rounded),
       title: Text(playlist.name),
       subtitle: Text('${playlist.songs.length} songs'),
       onTap: () {
