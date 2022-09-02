@@ -5,6 +5,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:marquee/marquee.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
+import '../../../routes/app_pages.dart';
 import '../../playlist/controllers/playlist_helper.dart';
 import '../../../data/models/position_data.dart';
 import '../../../widgets/favorite_button.dart';
@@ -53,14 +54,25 @@ class ControllButtons extends GetWidget<PlayerController> {
                     ],
                   );
                 }),
+
+            //controlls
             Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-              IconButton(onPressed: () {}, icon: const Icon(Icons.timer_sharp)),
               IconButton(
-                  onPressed: () {
-                    PlaylistHelper().showPlayistaddBottomSheet(
-                        controller.currentSong.value);
-                  },
-                  icon: const Icon(Icons.playlist_add)),
+                onPressed: () {},
+                icon: const Icon(Icons.timer_sharp),
+                tooltip: 'Timer',
+              ),
+              IconButton(
+                onPressed: () => Get.toNamed(Routes.QUEUE),
+                icon: const Icon(Icons.queue_music),
+                tooltip: 'Add to Queue',
+              ),
+              IconButton(
+                onPressed: () => PlaylistHelper()
+                    .showPlayistaddBottomSheet(controller.currentSong.value),
+                icon: const Icon(Icons.playlist_add),
+                tooltip: 'Add to playlist',
+              ),
               StreamBuilder(
                   stream: controller.currentSong.stream,
                   builder: (context, snapshot) {
@@ -86,10 +98,6 @@ class ControllButtons extends GetWidget<PlayerController> {
                   bufferedBarColor: Colors.transparent,
                   barHeight: 4,
                   thumbRadius: 6,
-                  onDragUpdate: (val) {
-                    // player.seek(val.timeStamp);
-                    print(val.timeStamp);
-                  },
                   thumbGlowRadius: 15,
                   onSeek: (duration) {
                     player.seek(duration);

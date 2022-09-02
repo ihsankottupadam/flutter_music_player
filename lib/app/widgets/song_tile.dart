@@ -5,21 +5,32 @@ import 'package:music_player/app/modules/favorites/controllers/favorites_control
 import 'package:music_player/app/widgets/mypopupmenu.dart';
 import 'package:music_player/app/modules/player_screen/controllers/player_controller.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:we_slide/we_slide.dart';
 
 import '../modules/playlist/controllers/playlist_helper.dart';
 
 class SongTile extends StatelessWidget {
-  const SongTile({Key? key, required this.song, required this.onTap, this.menu})
+  const SongTile(
+      {Key? key,
+      required this.song,
+      required this.onTap,
+      this.menu,
+      this.showMenu = true,
+      this.isSelected = false})
       : super(key: key);
   final SongModel song;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final double radius = 7;
   final Widget? menu;
+  final bool showMenu;
+  final bool isSelected;
   @override
   Widget build(BuildContext context) {
+    final PlayerController playerController = Get.find();
     return ListTile(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       onTap: onTap,
+      selected: isSelected,
       title: Text(
         song.title,
         maxLines: 1,
@@ -58,53 +69,78 @@ class SongTile extends StatelessWidget {
           ),
         ),
       ),
+      selectedTileColor: Colors.white.withOpacity(0.1),
+      selectedColor: Theme.of(context).colorScheme.secondary,
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Obx(
-            () => Get.find<PlayerController>().currentSongId.value == song.id
-                ? const MiniMusicVisualizer(
-                    color: Colors.blue,
+            () => playerController.currentSongId.value == song.id
+                ? MiniMusicVisualizer(
+                    color: Theme.of(context).colorScheme.secondary,
                     width: 4,
                     height: 15,
                   )
                 : const SizedBox(),
           ),
           //takes menu as menu given otherwise takes songtile menu
-          menu ??
-              GetBuilder<FavoritesController>(builder: (favController) {
-                return MyPopupMenu(
-                    items: [
-                      MyPopupItem(
-                          id: 0,
-                          title: 'Add to Playlist',
-                          icon: Icons.playlist_add),
-                      !favController.isInFav(song.id)
-                          ? MyPopupItem(
-                              id: 1,
-                              title: 'Add to Favorites',
-                              icon: Icons.favorite)
-                          : MyPopupItem(
-                              id: 2,
-                              title: 'Remove from Fav',
-                              icon: Icons.favorite_border),
-                    ],
-                    onItemSelected: (id) {
-                      switch (id) {
-                        case 0:
-                          PlaylistHelper().showPlayistaddBottomSheet(song);
-                          break;
-                        case 1:
-                          favController.addToFav(song);
-                          break;
-                        case 2:
-                          favController.removeFav(song.id);
-                          break;
-                        default:
-                          break;
-                      }
-                    });
-              })
+          if (showMenu)
+            menu ??
+                GetBuilder<FavoritesController>(builder: (favController) {
+                  return MyPopupMenu(
+                      items: [
+                        MyPopupItem(
+                            id: 0,
+                            title: 'Play',
+                            icon: Icons.play_arrow_rounded),
+                        MyPopupItem(
+                            id: 1,
+                            title: 'Play next',
+                            icon: Icons.play_arrow_rounded),
+                        MyPopupItem(
+                            id: 2,
+                            title: 'Add to Playlist',
+                            icon: Icons.playlist_add),
+                        !favController.isInFav(song.id)
+                            ? MyPopupItem(
+                                id: 3,
+                                title: 'Add to Favorites',
+                                icon: Icons.favorite)
+                            : MyPopupItem(
+                                id: 4,
+                                title: 'Remove from Fav',
+                                icon: Icons.favorite_border),
+                        MyPopupItem(
+                            id: 5,
+                            title: 'Add to Queue',
+                            icon: Icons.queue_music_rounded)
+                      ],
+                      onItemSelected: (id) {
+                        switch (id) {
+                          case 0:
+                            playerController.setPlaylist([song]);
+                            Get.find<WeSlideController>().show();
+                            break;
+                          case 1:
+                            playerController.addNextInQueue(song);
+                            break;
+                          case 2:
+                            PlaylistHelper().showPlayistaddBottomSheet(song);
+                            break;
+                          case 3:
+                            favController.addToFav(song);
+                            break;
+                          case 4:
+                            favController.removeFav(song.id);
+                            break;
+                          case 5:
+                            playerController.addSongsToQueue([song]);
+                            break;
+                          default:
+                            break;
+                        }
+                      });
+                })
         ],
       ),
     );

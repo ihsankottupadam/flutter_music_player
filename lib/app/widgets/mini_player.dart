@@ -15,80 +15,85 @@ class MiniPlayer extends GetWidget<PlayerController> {
     AudioPlayer player = controller.player;
     return GestureDetector(
       onTap: onTap,
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-        child: Container(
-          decoration: BoxDecoration(
-              border:
-                  Border.all(width: 0, color: Colors.white.withOpacity(0.2)),
-              color: Colors.black.withOpacity(0.65)),
-          width: double.infinity,
-          height: 60,
-          child: Row(
-            children: [
-              Expanded(
-                child: StreamBuilder<SongModel>(
-                    stream: controller.currentSong.stream,
-                    builder: (context, snapshot) {
-                      if (!controller.hasPlaylist) {
-                        return const SizedBox();
-                      }
-                      SongModel currSong = controller.currentSong.value;
-                      return Row(
-                        children: [
-                          QueryArtworkWidget(
-                            id: currSong.id,
-                            artworkHeight: 60,
-                            artworkWidth: 60,
-                            type: ArtworkType.AUDIO,
-                            artworkFit: BoxFit.cover,
-                            artworkBorder: BorderRadius.circular(0),
-                            nullArtworkWidget: Container(
-                              width: 60,
-                              height: 60,
-                              decoration: const BoxDecoration(
-                                  // color: Color(0x15ffffff),
-                                  gradient: LinearGradient(
-                                colors: [Color(0x55ffffff), Color(0x15ffffff)],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomCenter,
-                              )),
-                              child: const Icon(
-                                Icons.music_note,
-                                color: Color(0xFF5AB2FA),
-                                size: 25,
+      child: ClipRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+          child: Container(
+            decoration: BoxDecoration(
+                border:
+                    Border.all(width: 0, color: Colors.white.withOpacity(0.2)),
+                color: Colors.black.withOpacity(0.65)),
+            width: double.infinity,
+            height: 60,
+            child: Row(
+              children: [
+                Expanded(
+                  child: StreamBuilder<SongModel>(
+                      stream: controller.currentSong.stream,
+                      builder: (context, snapshot) {
+                        if (!controller.hasPlaylist) {
+                          return const SizedBox();
+                        }
+                        SongModel currSong = controller.currentSong.value;
+                        return Row(
+                          children: [
+                            QueryArtworkWidget(
+                              id: currSong.id,
+                              artworkHeight: 60,
+                              artworkWidth: 60,
+                              type: ArtworkType.AUDIO,
+                              artworkFit: BoxFit.cover,
+                              artworkBorder: BorderRadius.circular(0),
+                              nullArtworkWidget: Container(
+                                width: 60,
+                                height: 60,
+                                decoration: const BoxDecoration(
+                                    // color: Color(0x15ffffff),
+                                    gradient: LinearGradient(
+                                  colors: [
+                                    Color(0x55ffffff),
+                                    Color(0x15ffffff)
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomCenter,
+                                )),
+                                child: const Icon(
+                                  Icons.music_note,
+                                  color: Color(0xFF5AB2FA),
+                                  size: 25,
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 5),
-                          Expanded(
-                            child: Text(currSong.title,
-                                overflow: TextOverflow.ellipsis),
-                          )
-                        ],
-                      );
-                    }),
-              ),
-              StreamBuilder<SequenceState?>(
-                stream: player.sequenceStateStream,
-                builder: (_, __) {
-                  return _previousButton();
-                },
-              ),
-              StreamBuilder<PlayerState>(
-                stream: player.playerStateStream,
-                builder: (_, snapshot) {
-                  final playerState = snapshot.data;
-                  return _playButton(playerState);
-                },
-              ),
-              StreamBuilder<SequenceState?>(
-                stream: player.sequenceStateStream,
-                builder: (_, __) {
-                  return _nextButton();
-                },
-              )
-            ],
+                            const SizedBox(width: 5),
+                            Expanded(
+                              child: Text(currSong.title,
+                                  overflow: TextOverflow.ellipsis),
+                            )
+                          ],
+                        );
+                      }),
+                ),
+                StreamBuilder<SequenceState?>(
+                  stream: player.sequenceStateStream,
+                  builder: (_, __) {
+                    return _previousButton();
+                  },
+                ),
+                StreamBuilder<PlayerState>(
+                  stream: player.playerStateStream,
+                  builder: (_, snapshot) {
+                    final playerState = snapshot.data;
+                    return _playButton(playerState);
+                  },
+                ),
+                StreamBuilder<SequenceState?>(
+                  stream: player.sequenceStateStream,
+                  builder: (_, __) {
+                    return _nextButton();
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),

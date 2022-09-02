@@ -6,6 +6,8 @@ import '../modules/library/bindings/library_binding.dart';
 import '../modules/library/views/library_view.dart';
 import '../modules/player_screen/bindings/player_screen_binding.dart';
 import '../modules/player_screen/views/player_screen_view.dart';
+import '../modules/queue/bindings/queue_binding.dart';
+import '../modules/queue/views/queue_view.dart';
 import '../modules/search/bindings/search_binding.dart';
 import '../modules/search/views/search_view.dart';
 
@@ -38,6 +40,11 @@ class AppPages {
       name: _Paths.SEARCH,
       page: () => const SearchView(),
       binding: SearchBinding(),
+    ),
+    GetPage(
+      name: _Paths.QUEUE,
+      page: () => QueueView(),
+      binding: QueueBinding(),
     ),
   ];
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
@@ -14,7 +16,7 @@ class PlayerController extends GetxController {
   List<SongModel> songQueue = [];
   late ConcatenatingAudioSource playlist;
   // ignore: prefer_final_fields
-  int _currentIndex = 0;
+  int _currentIndex = -1;
   Rx<SongModel> currentSong = SongModel({'_id': 0}).obs;
   RxInt currentSongId = 0.obs;
   int get currentIndex => _currentIndex;
@@ -23,6 +25,7 @@ class PlayerController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    playlist = ConcatenatingAudioSource(children: []);
     player.currentIndexStream.listen((index) {
       if (index != null) {
         // currentSongId.value = songQueue[index].id;
@@ -61,16 +64,6 @@ class PlayerController extends GetxController {
           player.durationStream,
           (position, bufferedPosition, duration) => PositionData(
               position, bufferedPosition, duration ?? Duration.zero));
-
-  ConcatenatingAudioSource createPlaylist(List<SongModel> songs) {
-    List<AudioSource> audioSorce = [];
-
-    for (SongModel song in songs) {
-      audioSorce.add(AudioSource.uri(Uri.parse(song.uri!)));
-    }
-    return ConcatenatingAudioSource(children: audioSorce);
-  }
-
   _updateBgColor() async {
     UiController uiController = Get.find();
     final image = await OnAudioQuery().queryArtwork(
@@ -83,6 +76,37 @@ class PlayerController extends GetxController {
     } else {
       uiController.setToDefaultColor();
     }
+  }
+  //functions for updating songQueue
+
+  ///for adding list of songs to queue
+  ConcatenatingAudioSource createPlaylist(List<SongModel> songs) {
+    List<AudioSource> audioSorce = [];
+
+    for (SongModel song in songs) {
+      audioSorce.add(AudioSource.uri(Uri.parse(song.uri!)));
+    }
+    return ConcatenatingAudioSource(children: audioSorce);
+  }
+
+  ///for playing specific song from queue
+  playfromQueue(int index) {
+    player.seek(Duration.zero, index: index);
+  }
+
+  addSongToQueue(SongModel song) {
+    songQueue.add(song);
+    playlist.add(createPlaylist([song]));
+  }
+
+  addSongsToQueue(List<SongModel> songs) {
+    songQueue.addAll(songs);
+    playlist.add(createPlaylist(songs));
+  }
+
+  addNextInQueue(SongModel song) {
+    songQueue.insert(currentIndex + 1, song);
+    playlist.insert(currentIndex + 1, createPlaylist([song]));
   }
 
   // @override

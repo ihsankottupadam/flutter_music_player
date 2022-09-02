@@ -10,6 +10,7 @@ abstract class Routes {
   static const PLAYER_SCREEN = _Paths.PLAYER_SCREEN;
   static const ALBUM_SCREEN = _Paths.ALBUM_SCREEN;
   static const SEARCH = _Paths.SEARCH;
+  static const QUEUE = _Paths.QUEUE;
 }
 
 abstract class _Paths {
@@ -19,4 +20,5 @@ abstract class _Paths {
   static const PLAYER_SCREEN = '/player-screen';
   static const ALBUM_SCREEN = '/album-screen';
   static const SEARCH = '/search';
+  static const QUEUE = '/queue';
 }

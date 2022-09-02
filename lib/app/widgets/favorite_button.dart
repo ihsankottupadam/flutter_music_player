@@ -25,7 +25,8 @@ class FavoriteButton extends StatelessWidget {
             icon: Icon(
               Icons.favorite,
               color: isFav ? Colors.red : Colors.grey,
-            ));
+            ),
+            tooltip: 'Favorite');
       },
     );
   }
