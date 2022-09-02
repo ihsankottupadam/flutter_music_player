@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:music_player/app/widgets/mini_player.dart';
 
 import '../../../widgets/bg_container.dart';
 import '../../../widgets/song_tile.dart';
@@ -21,35 +22,45 @@ class QueueView extends GetView<QueueController> {
             backgroundColor: Colors.transparent,
             centerTitle: true,
           ),
-          body: StreamBuilder(
-              stream: playerController.player.sequenceStateStream,
-              builder: (context, snapshot) {
-                return ReorderableListView.builder(
-                  scrollController: controller.scrollController,
-                  itemBuilder: (context, index) {
-                    return Dismissible(
-                      //to avoid duplicated key wen same son added to queue
-                      key: ValueKey('$index,${controller.songQueue[index].id}'),
-                      direction: playerController.currentIndex == index
-                          ? DismissDirection.none
-                          : DismissDirection.horizontal,
-                      onDismissed: (direction) =>
-                          controller.removeFromQueue(index),
-                      child: SongTile(
-                        song: controller.songQueue[index],
-                        isSelected: playerController.currentIndex == index,
-                        onTap: () {
-                          controller.playerController.playfromQueue(index);
+          body: Column(
+            children: [
+              Expanded(
+                child: StreamBuilder(
+                    stream: playerController.player.sequenceStateStream,
+                    builder: (context, snapshot) {
+                      return ReorderableListView.builder(
+                        scrollController: controller.scrollController,
+                        itemBuilder: (context, index) {
+                          return Dismissible(
+                            //to avoid duplicated key wen same son added to queue
+                            key: ValueKey(
+                                '$index,${controller.songQueue[index].id}'),
+                            direction: playerController.currentIndex == index
+                                ? DismissDirection.none
+                                : DismissDirection.horizontal,
+                            onDismissed: (direction) =>
+                                controller.removeFromQueue(index),
+                            child: SongTile(
+                              song: controller.songQueue[index],
+                              isSelected:
+                                  playerController.currentIndex == index,
+                              onTap: () {
+                                controller.playerController
+                                    .playfromQueue(index);
+                              },
+                              showMenu: false,
+                            ),
+                          );
                         },
-                        showMenu: false,
-                      ),
-                    );
-                  },
-                  itemCount: controller.songQueue.length,
-                  onReorder: controller.reOrderQueue,
-                  proxyDecorator: proxyDecorator,
-                );
-              })),
+                        itemCount: controller.songQueue.length,
+                        onReorder: controller.reOrderQueue,
+                        proxyDecorator: proxyDecorator,
+                      );
+                    }),
+              ),
+              MiniPlayer(onTap: () => Get.back())
+            ],
+          )),
     );
   }
 

@@ -7,8 +7,8 @@ import 'package:music_player/app/modules/player_screen/controllers/player_contro
 import 'package:on_audio_query/on_audio_query.dart';
 
 class MiniPlayer extends GetWidget<PlayerController> {
-  const MiniPlayer({Key? key, required this.onTap}) : super(key: key);
-  final VoidCallback onTap;
+  const MiniPlayer({Key? key, this.onTap}) : super(key: key);
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
