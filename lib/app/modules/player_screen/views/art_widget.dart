@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -30,14 +31,16 @@ class ArtWidget extends GetWidget<PlayerController> {
                   }),
             ),
           ),
-          StreamBuilder<SongModel>(
-              stream: controller.currentSong.stream,
-              builder: (_, snapshot) {
-                if (snapshot.data == null) {
-                  return SizedBox(height: height);
-                }
+          GetBuilder<PlayerController>(builder: (_) {
+            if (!controller.hasPlaylist) {
+              return SizedBox(height: height);
+            }
+            return CarouselSlider.builder(
+              carouselController: controller.carouselController,
+              itemCount: controller.songQueue.length,
+              itemBuilder: (context, int itemIndex, int pageViewIndex) {
                 return QueryArtworkWidget(
-                  id: snapshot.data!.id,
+                  id: controller.songQueue[itemIndex].id,
                   artworkHeight: height,
                   artworkWidth: height,
                   type: ArtworkType.AUDIO,
@@ -65,7 +68,18 @@ class ArtWidget extends GetWidget<PlayerController> {
                     ),
                   ),
                 );
-              }),
+              },
+              options: CarouselOptions(
+                  initialPage: controller.currentIndex,
+                  viewportFraction: 1,
+                  enableInfiniteScroll: false,
+                  onPageChanged: (index, reason) {
+                    if (reason == CarouselPageChangedReason.manual) {
+                      controller.playfromQueue(index);
+                    }
+                  }),
+            );
+          })
         ],
       ),
     ));

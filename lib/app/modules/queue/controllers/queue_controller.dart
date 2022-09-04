@@ -29,6 +29,7 @@ class QueueController extends GetxController {
     SongModel item = songQueue.removeAt(oldIndex);
     songQueue.insert(newIndex, item);
     playlist.move(oldIndex, newIndex);
+    playerController.update();
   }
 
   removeFromQueue(int index) {

@@ -12,17 +12,18 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'package:we_slide/we_slide.dart';
 
 class SongsTab extends GetWidget<LibraryController> {
-  const SongsTab({Key? key, required this.query}) : super(key: key);
+  const SongsTab({Key? key, required this.query, this.isMainTab = false})
+      : super(key: key);
   final Future<List<SongModel>> query;
+  final bool isMainTab;
   @override
   Widget build(BuildContext context) {
-    //print('SongsTabRebuilded');
-    return GetBuilder<LibraryController>(builder: (context) {
-      // print('GETBuilder called');
+    return GetBuilder<LibraryController>(builder: (controller) {
       return FutureBuilder<List<SongModel>>(
-          future: query,
+          future: !isMainTab
+              ? query
+              : controller.audioQuery.querySongs(uriType: UriType.EXTERNAL),
           builder: (BuildContext context, snapshot) {
-            //  print('FutureBuilder called');
             if (snapshot.data == null) {
               return const Center(child: CircularProgressIndicator());
             }

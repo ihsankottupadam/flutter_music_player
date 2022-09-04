@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -22,6 +24,8 @@ class LibraryController extends GetxController {
       bool permissionStatus = await _audioQuery.permissionsStatus();
       if (!permissionStatus) {
         await _audioQuery.permissionsRequest();
+        permissionStatus = await _audioQuery.permissionsStatus();
+        log(permissionStatus.toString());
         update();
       }
     }

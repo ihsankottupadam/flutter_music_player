@@ -1,10 +1,11 @@
-import 'dart:developer';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:rxdart/rxdart.dart' as rx_dart;
+import 'package:carousel_slider/carousel_controller.dart';
 
 import '../../../controllers/ui_controller.dart';
 import '../../../core/utils/utils.dart';
@@ -15,13 +16,13 @@ class PlayerController extends GetxController {
   late List<SongModel> allSongs;
   List<SongModel> songQueue = [];
   late ConcatenatingAudioSource playlist;
-  // ignore: prefer_final_fields
   int _currentIndex = -1;
   Rx<SongModel> currentSong = SongModel({'_id': 0}).obs;
   RxInt currentSongId = 0.obs;
   int get currentIndex => _currentIndex;
   bool get hasPlaylist => songQueue.isNotEmpty;
   RxBool showMiniPlayer = false.obs;
+  final carouselController = CarouselController();
   @override
   void onInit() {
     super.onInit();
@@ -38,12 +39,13 @@ class PlayerController extends GetxController {
         currentSongId.value = songQueue[event.currentIndex].id;
         currentSong.value = songQueue[event.currentIndex];
         _updateBgColor();
+        carouselController.animateToPage(event.currentIndex);
       }
     });
   }
 
   setPlaylist(List<SongModel> songs, {int initialIndex = 0}) {
-    songQueue = songs;
+    songQueue = [...songs]; //to make hard copy
     if (showMiniPlayer.value == false) {
       showMiniPlayer.value = true;
     }
@@ -55,6 +57,7 @@ class PlayerController extends GetxController {
     );
     player.androidAudioSessionId;
     player.play();
+    update();
   }
 
   Stream<PositionData> get positionDataStream =>
@@ -72,7 +75,8 @@ class PlayerController extends GetxController {
     if (image != null) {
       final color =
           await Utils.getColorfromImage(imageProvider: MemoryImage(image));
-      uiController.setbgColor(color.withOpacity(0.8));
+      Timer(const Duration(milliseconds: 100),
+          () => uiController.setbgColor(color.withOpacity(0.8)));
     } else {
       uiController.setToDefaultColor();
     }
@@ -97,16 +101,19 @@ class PlayerController extends GetxController {
   addSongToQueue(SongModel song) {
     songQueue.add(song);
     playlist.add(createPlaylist([song]));
+    update();
   }
 
   addSongsToQueue(List<SongModel> songs) {
     songQueue.addAll(songs);
     playlist.add(createPlaylist(songs));
+    update();
   }
 
   addNextInQueue(SongModel song) {
     songQueue.insert(currentIndex + 1, song);
     playlist.insert(currentIndex + 1, createPlaylist([song]));
+    update();
   }
 
   // @override

@@ -45,6 +45,7 @@ class LibraryView extends GetView<LibraryController> {
           body: TabBarView(physics: const BouncingScrollPhysics(), children: [
             SongsTab(
                 key: const Key('songTab'),
+                isMainTab: true,
                 query: controller.audioQuery
                     .querySongs(uriType: UriType.EXTERNAL)),
             const RecentTab(),
