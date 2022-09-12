@@ -6,6 +6,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:rxdart/rxdart.dart' as rx_dart;
 import 'package:carousel_slider/carousel_controller.dart';
+import 'package:we_slide/we_slide.dart';
 
 import '../../../controllers/ui_controller.dart';
 import '../../../core/utils/utils.dart';
@@ -19,10 +20,12 @@ class PlayerController extends GetxController {
   int _currentIndex = -1;
   Rx<SongModel> currentSong = SongModel({'_id': 0}).obs;
   RxInt currentSongId = 0.obs;
-  int get currentIndex => _currentIndex;
-  bool get hasPlaylist => songQueue.isNotEmpty;
   RxBool showMiniPlayer = false.obs;
   final carouselController = CarouselController();
+  bool isLoaded = false;
+  int get currentIndex => _currentIndex;
+  bool get hasPlaylist => songQueue.isNotEmpty;
+
   @override
   void onInit() {
     super.onInit();
@@ -39,48 +42,29 @@ class PlayerController extends GetxController {
         currentSongId.value = songQueue[event.currentIndex].id;
         currentSong.value = songQueue[event.currentIndex];
         _updateBgColor();
+        if (!isLoaded) {
+          isLoaded = true;
+          return;
+        }
         carouselController.animateToPage(event.currentIndex);
       }
     });
   }
 
-  setPlaylist(List<SongModel> songs, {int initialIndex = 0}) {
+  playSongs(List<SongModel> songs, {initialIndex = 0, showPanel = true}) {
     songQueue = [...songs]; //to make hard copy
     if (showMiniPlayer.value == false) {
       showMiniPlayer.value = true;
     }
     _currentIndex = initialIndex;
     playlist = createPlaylist(songs);
-    player.setAudioSource(
-      playlist,
-      initialIndex: initialIndex,
-    );
+    player.setAudioSource(playlist, initialIndex: initialIndex);
     player.androidAudioSessionId;
     player.play();
     update();
+    if (showPanel) Get.find<WeSlideController>().show();
   }
 
-  Stream<PositionData> get positionDataStream =>
-      rx_dart.Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
-          player.positionStream,
-          player.bufferedPositionStream,
-          player.durationStream,
-          (position, bufferedPosition, duration) => PositionData(
-              position, bufferedPosition, duration ?? Duration.zero));
-  _updateBgColor() async {
-    UiController uiController = Get.find();
-    final image = await OnAudioQuery().queryArtwork(
-        songQueue[currentIndex].id, ArtworkType.AUDIO,
-        format: ArtworkFormat.JPEG);
-    if (image != null) {
-      final color =
-          await Utils.getColorfromImage(imageProvider: MemoryImage(image));
-      Timer(const Duration(milliseconds: 100),
-          () => uiController.setbgColor(color.withOpacity(0.8)));
-    } else {
-      uiController.setToDefaultColor();
-    }
-  }
   //functions for updating songQueue
 
   ///for adding list of songs to queue
@@ -102,18 +86,21 @@ class PlayerController extends GetxController {
     songQueue.add(song);
     playlist.add(createPlaylist([song]));
     update();
+    Utils.showSnackBar(text: 'Song added to queue');
   }
 
   addSongsToQueue(List<SongModel> songs) {
     songQueue.addAll(songs);
     playlist.add(createPlaylist(songs));
     update();
+    Utils.showSnackBar(text: '${songs.length} songs added to queue');
   }
 
   addNextInQueue(SongModel song) {
     songQueue.insert(currentIndex + 1, song);
     playlist.insert(currentIndex + 1, createPlaylist([song]));
     update();
+    Utils.showSnackBar(text: 'Song added to queue');
   }
 
   // @override
@@ -121,4 +108,27 @@ class PlayerController extends GetxController {
   //   player.dispose();
   //   super.onClose();
   // }
+
+  Stream<PositionData> get positionDataStream =>
+      rx_dart.Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
+          player.positionStream,
+          player.bufferedPositionStream,
+          player.durationStream,
+          (position, bufferedPosition, duration) => PositionData(
+              position, bufferedPosition, duration ?? Duration.zero));
+
+  _updateBgColor() async {
+    UiController uiController = Get.find();
+    final image = await OnAudioQuery().queryArtwork(
+        songQueue[currentIndex].id, ArtworkType.AUDIO,
+        format: ArtworkFormat.JPEG);
+    if (image != null) {
+      final color =
+          await Utils.getColorfromImage(imageProvider: MemoryImage(image));
+      Timer(const Duration(milliseconds: 100),
+          () => uiController.setbgColor(color.withOpacity(0.8)));
+    } else {
+      uiController.setToDefaultColor();
+    }
+  }
 }

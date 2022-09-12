@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:music_player/app/modules/favorites/controllers/favorites_controller.dart';
-import 'package:music_player/app/widgets/emptyview.dart';
-
-import 'package:music_player/app/widgets/mypopupmenu.dart';
-import 'package:music_player/app/widgets/empty_view.dart';
-
-import 'package:music_player/app/widgets/song_tile.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:we_slide/we_slide.dart';
+
+import '../../../widgets/empty_view.dart';
+import '../../../widgets/mypopupmenu.dart';
+import '../../../widgets/song_tile.dart';
 import '../../player_screen/controllers/player_controller.dart';
 import '../../playlist/controllers/playlist_helper.dart';
+import '../controllers/favorites_controller.dart';
 
 class FavoriteScreen extends StatelessWidget {
   FavoriteScreen({Key? key}) : super(key: key);
@@ -28,11 +25,12 @@ class FavoriteScreen extends StatelessWidget {
       body: GetBuilder<FavoritesController>(builder: (controller) {
         List<SongModel> favSongs = controller.favSongs;
         PlayerController playerController = Get.find();
-        WeSlideController slideController = Get.find();
+
         if (favSongs.isEmpty) {
-          return const EmptyViewN(
+          return const EmptyView(
+            icon: Icons.favorite,
             text: 'No Songs',
-            bottom: 'Found',
+            iconColor: Colors.red,
           );
         }
         return ListView.builder(
@@ -43,8 +41,7 @@ class FavoriteScreen extends StatelessWidget {
             return SongTile(
               song: song,
               onTap: () {
-                playerController.setPlaylist(favSongs, initialIndex: index);
-                slideController.show();
+                playerController.playSongs(favSongs, initialIndex: index);
               },
               menu: MyPopupMenu(
                   items: [

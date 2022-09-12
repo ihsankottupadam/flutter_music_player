@@ -19,7 +19,7 @@ class QueueController extends GetxController {
 
   scrollTo(int index) {
     scrollController.animateTo(0,
-        duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+        duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
   }
 
   reOrderQueue(int oldIndex, int newIndex) {

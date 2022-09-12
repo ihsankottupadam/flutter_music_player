@@ -5,8 +5,8 @@ import 'package:music_player/app/modules/favorites/controllers/favorites_control
 import 'package:music_player/app/widgets/mypopupmenu.dart';
 import 'package:music_player/app/modules/player_screen/controllers/player_controller.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:we_slide/we_slide.dart';
 
+import '../core/utils/utils.dart';
 import '../modules/playlist/controllers/playlist_helper.dart';
 
 class SongTile extends StatelessWidget {
@@ -76,10 +76,17 @@ class SongTile extends StatelessWidget {
         children: [
           Obx(
             () => playerController.currentSongId.value == song.id
-                ? MiniMusicVisualizer(
-                    color: Theme.of(context).colorScheme.secondary,
-                    width: 4,
-                    height: 15,
+                ? ShaderMask(
+                    shaderCallback: (rect) => const LinearGradient(
+                            colors: [Color(0xff58f9a2), Color(0xff5af8f9)],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter)
+                        .createShader(rect),
+                    child: MiniMusicVisualizer(
+                      color: Theme.of(context).colorScheme.secondary,
+                      width: 4,
+                      height: 15,
+                    ),
                   )
                 : const SizedBox(),
           ),
@@ -118,8 +125,8 @@ class SongTile extends StatelessWidget {
                       onItemSelected: (id) {
                         switch (id) {
                           case 0:
-                            playerController.setPlaylist([song]);
-                            Get.find<WeSlideController>().show();
+                            playerController.playSongs([song]);
+
                             break;
                           case 1:
                             playerController.addNextInQueue(song);
@@ -129,9 +136,12 @@ class SongTile extends StatelessWidget {
                             break;
                           case 3:
                             favController.addToFav(song);
+                            Utils.showSnackBar(text: 'Song added to favorites');
                             break;
                           case 4:
                             favController.removeFav(song.id);
+                            Utils.showSnackBar(
+                                text: 'Song removed from favorites');
                             break;
                           case 5:
                             playerController.addSongsToQueue([song]);

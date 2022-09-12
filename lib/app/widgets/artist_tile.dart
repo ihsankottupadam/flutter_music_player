@@ -1,12 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:music_player/app/core/values/colors.dart';
-import 'package:music_player/app/widgets/mini_playbutton.dart';
-
+import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
+import '../core/values/colors.dart';
 import '../modules/album_screen/views/album_screen_view.dart';
+import '../modules/library/controllers/library_controller.dart';
+import '../modules/player_screen/controllers/player_controller.dart';
+import 'mini_playbutton.dart';
 
 class ArtistTile extends StatelessWidget {
   const ArtistTile({Key? key, required this.artistModel}) : super(key: key);
@@ -49,8 +51,12 @@ class ArtistTile extends StatelessWidget {
                           fontSize: 12, color: Colors.white.withOpacity(0.5)),
                     ),
                     trailing: MiniPlayButton(
-                      onPress: () {
-                        print('Go.......');
+                      onPress: () async {
+                        final songs = await Get.find<LibraryController>()
+                            .audioQuery
+                            .queryAudiosFrom(
+                                AudiosFromType.ARTIST_ID, artistModel.id);
+                        Get.find<PlayerController>().playSongs(songs);
                       },
                     ),
                   ),

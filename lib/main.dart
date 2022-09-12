@@ -16,7 +16,7 @@ void main() async {
   await Hive.openBox<Playlist>('Playlist');
   runApp(
     GetMaterialApp(
-      title: "Application",
+      title: "Music Player",
       theme: ThemeData(brightness: Brightness.dark),
       initialBinding: InitialBindins(),
       initialRoute: AppPages.INITIAL,

@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class Utils {
@@ -20,23 +23,32 @@ class Utils {
   }
 
   static showSnackBar(
-      {required BuildContext context,
-      required String text,
-      bool isError = false}) {
-    ScaffoldMessenger.of(context)
+      {required String text,
+      BuildContext? context,
+      bool isError = false,
+      double botom = 125}) {
+    ScaffoldMessenger.of(Get.context!)
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
+            padding: const EdgeInsets.all(16),
             content: Text(
               text,
               style: const TextStyle(color: Colors.white),
             ),
-            backgroundColor: isError ? Colors.red : Colors.grey.shade700,
+            elevation: 1,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            backgroundColor:
+                isError ? Colors.red.withOpacity(1) : const Color(0xf5181818),
             behavior: SnackBarBehavior.floating,
-            margin: EdgeInsets.only(
-                bottom: MediaQuery.of(context).size.height - 100,
-                right: 20,
-                left: 20)),
+            margin: EdgeInsets.only(bottom: botom, right: 14, left: 14)),
       );
+  }
+
+  static String getFileSizeString({required int bytes, int decimals = 0}) {
+    const suffixes = ["b", "kb", "mb", "gb", "tb"];
+    var i = (log(bytes) / log(1024)).floor();
+    return ((bytes / pow(1024, i)).toStringAsFixed(decimals)) + suffixes[i];
   }
 }

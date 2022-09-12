@@ -4,7 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:music_player/app/data/models/playlist.dart';
 import 'package:music_player/app/modules/playlist/views/item_screen.dart';
 import 'package:music_player/app/modules/playlist/widgets/playlist_tile.dart';
-import 'package:music_player/app/widgets/emptyview.dart';
+import 'package:music_player/app/widgets/empty_view.dart';
 
 import '../controllers/playlist_helper.dart';
 
@@ -21,32 +21,33 @@ class PlaylistScreen extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(8),
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            ListTile(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8)),
-              leading: const Icon(Icons.add),
-              title: const Text(
-                'Create Playlist',
-                style: TextStyle(fontWeight: FontWeight.w500),
-              ),
-              onTap: () {
-                playlistHelper.createPlaylist(context);
-              },
+      body: Column(
+        children: [
+          ListTile(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            leading: const Icon(Icons.add),
+            title: const Text(
+              'Create Playlist',
+              style: TextStyle(fontWeight: FontWeight.w500),
             ),
-            ValueListenableBuilder(
+            onTap: () {
+              playlistHelper.createPlaylist(context);
+            },
+          ),
+          Expanded(
+            child: ValueListenableBuilder(
                 valueListenable: PlaylistHelper.box.listenable(),
                 builder: (context, Box<Playlist> box, _) {
                   List<Playlist> playlists = box.values.toList();
                   if (playlists.isEmpty) {
-                    return const EmptyViewN(text: 'No Playlist');
+                    return const EmptyView(
+                      icon: Icons.playlist_play_rounded,
+                      text: 'No Playlists',
+                    );
                   }
                   return ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: playlists.length,
                     itemBuilder: (context, index) {
@@ -63,9 +64,9 @@ class PlaylistScreen extends StatelessWidget {
                       );
                     },
                   );
-                })
-          ],
-        ),
+                }),
+          )
+        ],
       ),
     );
   }

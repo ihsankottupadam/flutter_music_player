@@ -1,11 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:music_player/app/core/values/colors.dart';
 import 'package:music_player/app/modules/album_screen/views/album_screen_view.dart';
 import 'package:music_player/app/widgets/mini_playbutton.dart';
-
 import 'package:on_audio_query/on_audio_query.dart';
+
+import '../modules/library/controllers/library_controller.dart';
+import '../modules/player_screen/controllers/player_controller.dart';
 
 class AlbumTile extends StatelessWidget {
   const AlbumTile({Key? key, required this.album}) : super(key: key);
@@ -17,8 +20,6 @@ class AlbumTile extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
         onTap: () {
-          // Get.to(() =>
-          //     AlbumScreenView(AudiosFromType.ALBUM_ID, album.id, album.album));
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => AlbumScreenView(
                   AudiosFromType.ALBUM_ID, album.id, album.album)));
@@ -50,8 +51,11 @@ class AlbumTile extends StatelessWidget {
                           fontSize: 12, color: Colors.white.withOpacity(0.5)),
                     ),
                     trailing: MiniPlayButton(
-                      onPress: () {
-                        print('Go.......');
+                      onPress: () async {
+                        final songs = await Get.find<LibraryController>()
+                            .audioQuery
+                            .queryAudiosFrom(AudiosFromType.ALBUM_ID, album.id);
+                        Get.find<PlayerController>().playSongs(songs);
                       },
                     ),
                   ),

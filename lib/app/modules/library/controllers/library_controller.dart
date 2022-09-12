@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -13,11 +11,6 @@ class LibraryController extends GetxController {
     super.onInit();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   OnAudioQuery get audioQuery => _audioQuery;
   _requestPermission() async {
     if (!kIsWeb) {
@@ -25,7 +18,6 @@ class LibraryController extends GetxController {
       if (!permissionStatus) {
         await _audioQuery.permissionsRequest();
         permissionStatus = await _audioQuery.permissionsStatus();
-        log(permissionStatus.toString());
         update();
       }
     }

@@ -157,15 +157,6 @@ class PlaylistHelper {
         });
   }
 
-  String _getNewName(String name) {
-    String nName = name;
-    int count = 1;
-    while (_playlistExist(nName)) {
-      nName = '$name (${count++})';
-    }
-    return nName;
-  }
-
   bool _playlistExist(String playlistName) {
     final playlists = box.values.toList();
     for (Playlist playlist in playlists) {

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_player/app/data/models/playlist.dart';
-import 'package:music_player/app/widgets/empty_songs.dart';
 import 'package:music_player/app/widgets/mypopupmenu.dart';
 import 'package:music_player/app/modules/playlist/controllers/playlist_helper.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:music_player/app/widgets/bg_container.dart';
 import 'package:music_player/app/widgets/song_tile.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:we_slide/we_slide.dart';
 
+import '../../../widgets/empty_songs.dart';
 import '../../player_screen/controllers/player_controller.dart';
 
 class PlaylistItemScreen extends StatelessWidget {
@@ -46,8 +45,7 @@ class PlaylistItemScreen extends StatelessWidget {
                         song: songs[index],
                         onTap: () {
                           Get.find<PlayerController>()
-                              .setPlaylist(songs, initialIndex: index);
-                          Get.find<WeSlideController>().show();
+                              .playSongs(songs, initialIndex: index);
                         },
                         menu: MyPopupMenu(
                             items: [

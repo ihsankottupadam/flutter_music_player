@@ -1,11 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:music_player/app/core/values/colors.dart';
 import 'package:music_player/app/widgets/mini_playbutton.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../modules/album_screen/views/album_screen_view.dart';
+import '../modules/library/controllers/library_controller.dart';
+import '../modules/player_screen/controllers/player_controller.dart';
 
 class GenreTile extends StatelessWidget {
   const GenreTile({Key? key, required this.genre}) : super(key: key);
@@ -19,8 +22,6 @@ class GenreTile extends StatelessWidget {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (contxt) => AlbumScreenView(
                   AudiosFromType.GENRE_ID, genre.id, genre.genre)));
-          // Get.to(() =>
-          //     AlbumScreenView(AudiosFromType.GENRE_ID, genre.id, genre.genre));
         },
         child: GridTile(
           footer: Padding(
@@ -49,8 +50,11 @@ class GenreTile extends StatelessWidget {
                           fontSize: 12, color: Colors.white.withOpacity(0.5)),
                     ),
                     trailing: MiniPlayButton(
-                      onPress: () {
-                        print('Go.......');
+                      onPress: () async {
+                        final songs = await Get.find<LibraryController>()
+                            .audioQuery
+                            .queryAudiosFrom(AudiosFromType.GENRE_ID, genre.id);
+                        Get.find<PlayerController>().playSongs(songs);
                       },
                     ),
                   ),

@@ -84,6 +84,7 @@ class ControllButtons extends GetWidget<PlayerController> {
                     );
                   })
             ]),
+            //seekbar
             StreamBuilder<PositionData>(
               stream: controller.positionDataStream,
               builder: (context, snapshot) {

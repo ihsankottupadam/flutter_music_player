@@ -18,19 +18,22 @@ class BottomBar extends GetWidget<HomeController> {
       child: Obx(
         () => BottomNavigationBar(
           items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.favorite), label: 'favorites'),
+                icon: Icon(Icons.home_rounded), label: 'Home'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.library_books), label: 'Playlist'),
+                icon: Icon(Icons.favorite), label: 'Favorites'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.playlist_play_rounded), label: 'Playlists'),
           ],
           elevation: 0,
           backgroundColor: Colors.transparent,
           type: BottomNavigationBarType.fixed,
           currentIndex: controller.curScreen.value,
           selectedItemColor: MyColors.secondary,
+          selectedFontSize: 11,
+          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w300),
           showUnselectedLabels: false,
-          showSelectedLabels: false,
+          showSelectedLabels: true,
           unselectedItemColor: Colors.white.withOpacity(0.5),
           onTap: (index) {
             controller.curScreen.value = index;

@@ -17,7 +17,9 @@ class MiniPlayer extends GetWidget<PlayerController> {
     AudioPlayer player = controller.player;
     return GestureDetector(
       onTap: onTap,
-      child: ClipRect(
+      child: Material(
+        clipBehavior: Clip.hardEdge,
+        color: Colors.transparent,
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
           child: Container(
@@ -104,12 +106,19 @@ class MiniPlayer extends GetWidget<PlayerController> {
                     stream: controller.positionDataStream,
                     builder: (context, snapshot) {
                       PositionData? positionData = snapshot.data;
-                      return LinearProgressIndicator(
-                        value: (positionData?.position.inSeconds ?? 0) /
-                            (durationInSec(positionData?.duration)),
-                        color: Theme.of(context).colorScheme.secondary,
-                        backgroundColor: Colors.transparent,
-                        minHeight: 1.5,
+                      return ShaderMask(
+                        shaderCallback: (rect) => const LinearGradient(
+                                colors: [Color(0xff58f9a2), Color(0xfffb84ff)],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight)
+                            .createShader(rect),
+                        child: LinearProgressIndicator(
+                          value: (positionData?.position.inMilliseconds ?? 0) /
+                              (durationinMilliSec(positionData?.duration)),
+                          color: Colors.white,
+                          backgroundColor: Colors.transparent,
+                          minHeight: 1.5,
+                        ),
                       );
                     },
                   ),
@@ -122,8 +131,8 @@ class MiniPlayer extends GetWidget<PlayerController> {
     );
   }
 
-  double durationInSec(Duration? duration) {
-    return duration != Duration.zero ? (duration?.inSeconds ?? 1) / 1 : 1;
+  double durationinMilliSec(Duration? duration) {
+    return duration != Duration.zero ? (duration?.inMilliseconds ?? 1) / 1 : 1;
   }
 
   Widget _playButton(PlayerState? playerState) {

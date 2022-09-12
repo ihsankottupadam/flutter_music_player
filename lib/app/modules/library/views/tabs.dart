@@ -9,7 +9,8 @@ import 'package:music_player/app/widgets/empty_view.dart';
 import 'package:music_player/app/widgets/genres_tile.dart';
 import 'package:music_player/app/widgets/song_tile.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:we_slide/we_slide.dart';
+
+import '../../../widgets/empty_songs.dart';
 
 class SongsTab extends GetWidget<LibraryController> {
   const SongsTab({Key? key, required this.query, this.isMainTab = false})
@@ -28,8 +29,7 @@ class SongsTab extends GetWidget<LibraryController> {
               return const Center(child: CircularProgressIndicator());
             }
             if (snapshot.data!.isEmpty) {
-              return const EmptyView(
-                  'Nothing to', 'Show here', 'Add Something');
+              return const EmptySongs();
             }
             List<SongModel> songs = snapshot.data!;
             if (key == const Key('songTab')) {
@@ -45,14 +45,7 @@ class SongsTab extends GetWidget<LibraryController> {
                     song: song,
                     onTap: () {
                       Get.find<PlayerController>()
-                          .setPlaylist(songs, initialIndex: index);
-                      Get.find<WeSlideController>().show();
-                      // Navigator.push(
-                      //     context,
-                      //     PageRouteBuilder(
-                      //         opaque: false,
-                      //         pageBuilder: (_, __, ___) =>
-                      //             const PlayerScreenView()));
+                          .playSongs(songs, initialIndex: index);
                     });
               },
             );
@@ -76,9 +69,10 @@ class RecentTab extends GetWidget<LibraryController> {
             return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.data!.isEmpty) {
-            return const EmptyView('Nothing to', 'Show here', 'Add Something');
+            return const EmptySongs();
           }
-          List<SongModel> songs = snapshot.data!.sublist(0, 20);
+          List<SongModel> songs = snapshot.data!.sublist(
+              0, snapshot.data!.length >= 20 ? 20 : snapshot.data!.length);
 
           return ListView.builder(
             physics: const BouncingScrollPhysics(),
@@ -92,14 +86,7 @@ class RecentTab extends GetWidget<LibraryController> {
                     if (playerController.player.playing) {
                       playerController.player.stop();
                     }
-                    playerController.setPlaylist(songs, initialIndex: index);
-                    Get.find<WeSlideController>().show();
-                    // Navigator.push(
-                    //     context,
-                    //     PageRouteBuilder(
-                    //         opaque: false,
-                    //         pageBuilder: (_, __, ___) =>
-                    //             const PlayerScreenView()));
+                    playerController.playSongs(songs, initialIndex: index);
                   });
             },
           );
@@ -122,7 +109,7 @@ class AlbumTab extends StatelessWidget {
           );
         }
         if (snapshot.data!.isEmpty) {
-          return const EmptyView('No Album', 'Found', '');
+          return const EmptyView(icon: Icons.album, text: 'No Album Found');
         }
         List<AlbumModel> albums = snapshot.data!;
         return GridView.builder(
@@ -152,7 +139,7 @@ class ArtistTab extends StatelessWidget {
           );
         }
         if (snapshot.data!.isEmpty) {
-          return const EmptyView('No Album', 'Found', '');
+          return const EmptyView(icon: Icons.person, text: 'No Artists Found');
         }
         List<ArtistModel> albums = snapshot.data!;
         return GridView.builder(
@@ -184,7 +171,8 @@ class GenreTab extends StatelessWidget {
           );
         }
         if (snapshot.data!.isEmpty) {
-          return const EmptyView('No Album', 'Found', '');
+          return const EmptyView(
+              icon: Icons.music_note, text: 'No Genres Found');
         }
         List<GenreModel> genre =
             snapshot.data!.where((element) => element.numOfSongs > 0).toList();

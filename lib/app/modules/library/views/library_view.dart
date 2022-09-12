@@ -63,8 +63,8 @@ class LibraryView extends GetView<LibraryController> {
         ],
         onItemSelected: (id) {
           if (id == 0) {
-            final sons = Get.find<LibraryController>().songs;
-            Get.find<PlayerController>().setPlaylist(sons);
+            final songs = Get.find<LibraryController>().songs;
+            Get.find<PlayerController>().playSongs(songs);
           }
         });
   }

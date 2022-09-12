@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_player/app/widgets/bg_container.dart';
+import 'package:music_player/app/widgets/dialog_details.dart';
 import 'package:we_slide/we_slide.dart';
 
 import '../../../widgets/mypopupmenu.dart';
@@ -14,6 +15,7 @@ class PlayerScreenView extends GetWidget<PlayerController> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return BgContainer(
       child: SafeArea(
         child: Scaffold(
@@ -29,7 +31,7 @@ class PlayerScreenView extends GetWidget<PlayerController> {
                 },
                 icon: const Icon(Icons.keyboard_arrow_down_rounded),
                 tooltip: 'Back'),
-            actions: [_buldMenu()],
+            actions: [_buldMenu(context)],
           ),
           body: LayoutBuilder(
             builder: (context, constraints) {
@@ -37,14 +39,14 @@ class PlayerScreenView extends GetWidget<PlayerController> {
                 return Column(
                   children: [
                     ArtWidget(
-                      height: constraints.maxHeight * .4,
+                      height: size.height * .4,
                     ),
                     const ControllButtons()
                   ],
                 );
               } else {
                 return Row(children: [
-                  ArtWidget(height: constraints.maxHeight * 0.80),
+                  ArtWidget(height: size.height * 0.80),
                   const ControllButtons()
                 ]);
               }
@@ -55,7 +57,7 @@ class PlayerScreenView extends GetWidget<PlayerController> {
     );
   }
 
-  MyPopupMenu _buldMenu() {
+  MyPopupMenu _buldMenu(BuildContext context) {
     return MyPopupMenu(
         items: [
           MyPopupItem(id: 0, title: 'Play All', icon: Icons.play_arrow_rounded),
@@ -63,9 +65,18 @@ class PlayerScreenView extends GetWidget<PlayerController> {
               id: 1, title: 'Song info', icon: Icons.info_outline_rounded),
         ],
         onItemSelected: (id) {
-          if (id == 0) {
-            final sons = Get.find<LibraryController>().songs;
-            Get.find<PlayerController>().setPlaylist(sons);
+          switch (id) {
+            case 0:
+              final songs = Get.find<LibraryController>().songs;
+              Get.find<PlayerController>().playSongs(songs, showPanel: false);
+              break;
+            case 1:
+              showDialog(
+                  context: context,
+                  builder: (context) => SongDetailDialog(
+                      song: Get.find<PlayerController>().currentSong.value));
+              break;
+            default:
           }
         });
   }

@@ -1,60 +1,101 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class EmptyView extends StatelessWidget {
-  const EmptyView(this.text1, this.text2, this.text3, {Key? key})
+  const EmptyView(
+      {Key? key,
+      required this.icon,
+      required this.text,
+      this.iconColor = Colors.white})
       : super(key: key);
-  final bool useWhite = false;
-  final String text1;
-  final String text2;
-  final String text3;
+  final IconData icon;
+  final Color iconColor;
+  final String text;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            RotatedBox(
-              quarterTurns: 3,
-              child: Text(
-                text1,
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                  fontSize: 15,
-                  color: useWhite
-                      ? Colors.white
-                      : Theme.of(context).colorScheme.secondary,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            const SizedBox(width: 5),
-            Column(
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            width: 80,
+            height: 80,
+            child: Stack(
+              clipBehavior: Clip.none,
               children: [
-                Text(
-                  text2,
-                  style: TextStyle(
-                    fontSize: 42,
-                    color: useWhite
-                        ? Colors.white
-                        : Theme.of(context).colorScheme.secondary,
-                    fontWeight: FontWeight.w600,
+                Positioned(
+                  top: 40,
+                  left: 40,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0x22ffffff),
+                          border:
+                              Border.all(color: Colors.white.withOpacity(0.2)),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        width: 50,
+                        height: 50,
+                      ),
+                    ),
                   ),
                 ),
-                Text(
-                  text3,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: useWhite ? Colors.white : null,
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0x0f000000),
+                        border:
+                            Border.all(color: Colors.white.withOpacity(0.2)),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      width: 75,
+                      height: 75,
+                    ),
+                  ),
+                ),
+                Align(
+                    alignment: Alignment.center,
+                    child: Icon(icon, size: 40, color: iconColor)),
+                Positioned(
+                  top: -10,
+                  left: -10,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0x22ffffff),
+                          border:
+                              Border.all(color: Colors.white.withOpacity(0.2)),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        width: 50,
+                        height: 50,
+                      ),
+                    ),
                   ),
                 ),
               ],
             ),
-          ],
-        ),
-      ],
+          ),
+          const SizedBox(height: 20),
+          Text(
+            text,
+            style: TextStyle(
+                fontSize: 17,
+                color: Theme.of(context).colorScheme.secondary,
+                fontWeight: FontWeight.bold),
+          )
+        ],
+      ),
     );
   }
 }
