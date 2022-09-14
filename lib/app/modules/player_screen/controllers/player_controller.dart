@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:music_player/app/modules/player_screen/controllers/timer_controller.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:rxdart/rxdart.dart' as rx_dart;
 import 'package:carousel_slider/carousel_controller.dart';
@@ -15,6 +17,7 @@ import '../../../data/models/position_data.dart';
 class PlayerController extends GetxController {
   final AudioPlayer player = AudioPlayer();
   late List<SongModel> allSongs;
+  final timerController = Get.find<TimerController>();
   List<SongModel> songQueue = [];
   late ConcatenatingAudioSource playlist;
   int _currentIndex = -1;
@@ -86,21 +89,21 @@ class PlayerController extends GetxController {
     songQueue.add(song);
     playlist.add(createPlaylist([song]));
     update();
-    Utils.showSnackBar(text: 'Song added to queue');
+    Fluttertoast.showToast(msg: 'Song added to queue');
   }
 
   addSongsToQueue(List<SongModel> songs) {
     songQueue.addAll(songs);
     playlist.add(createPlaylist(songs));
     update();
-    Utils.showSnackBar(text: '${songs.length} songs added to queue');
+    Fluttertoast.showToast(msg: '${songs.length} songs added to queue');
   }
 
   addNextInQueue(SongModel song) {
     songQueue.insert(currentIndex + 1, song);
     playlist.insert(currentIndex + 1, createPlaylist([song]));
     update();
-    Utils.showSnackBar(text: 'Song added to queue');
+    Fluttertoast.showToast(msg: 'Song added to queue');
   }
 
   // @override

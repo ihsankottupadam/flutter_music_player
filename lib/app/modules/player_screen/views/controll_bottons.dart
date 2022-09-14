@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:marquee/marquee.dart';
+import 'package:music_player/app/core/values/colors.dart';
+import 'package:music_player/app/modules/player_screen/controllers/timer_controller.dart';
+import 'package:music_player/app/modules/player_screen/views/timer.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../routes/app_pages.dart';
@@ -14,6 +19,7 @@ import '../controllers/player_controller.dart';
 class ControllButtons extends GetWidget<PlayerController> {
   const ControllButtons({Key? key}) : super(key: key);
   final cColor = const Color(0xff18f7f7);
+
   @override
   Widget build(BuildContext context) {
     var player = controller.player;
@@ -57,11 +63,21 @@ class ControllButtons extends GetWidget<PlayerController> {
 
             //controlls
             Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.timer_sharp),
-                tooltip: 'Timer',
-              ),
+              Obx(() {
+                bool isTimerEnable = controller.timerController.enabled.value;
+                return IconButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => const TimerDialog());
+                  },
+                  icon: Icon(
+                    Icons.timer_sharp,
+                    color: isTimerEnable ? MyColors.secondary : Colors.white,
+                  ),
+                  tooltip: 'Timer',
+                );
+              }),
               IconButton(
                 onPressed: () => Get.toNamed(Routes.QUEUE),
                 icon: const Icon(Icons.queue_music),

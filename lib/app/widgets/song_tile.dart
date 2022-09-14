@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:mini_music_visualizer/mini_music_visualizer.dart';
 import 'package:music_player/app/modules/favorites/controllers/favorites_controller.dart';
@@ -6,7 +7,6 @@ import 'package:music_player/app/widgets/mypopupmenu.dart';
 import 'package:music_player/app/modules/player_screen/controllers/player_controller.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-import '../core/utils/utils.dart';
 import '../modules/playlist/controllers/playlist_helper.dart';
 
 class SongTile extends StatelessWidget {
@@ -136,12 +136,13 @@ class SongTile extends StatelessWidget {
                             break;
                           case 3:
                             favController.addToFav(song);
-                            Utils.showSnackBar(text: 'Song added to favorites');
+                            Fluttertoast.showToast(
+                                msg: 'Song added to favorites');
                             break;
                           case 4:
                             favController.removeFav(song.id);
-                            Utils.showSnackBar(
-                                text: 'Song removed from favorites');
+                            Fluttertoast.showToast(
+                                msg: 'Song removed from favorites');
                             break;
                           case 5:
                             playerController.addSongsToQueue([song]);

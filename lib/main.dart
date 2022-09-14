@@ -17,7 +17,10 @@ void main() async {
   runApp(
     GetMaterialApp(
       title: "Music Player",
-      theme: ThemeData(brightness: Brightness.dark),
+      theme: ThemeData(
+          brightness: Brightness.dark,
+          textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(primary: const Color(0xff64fed4)))),
       initialBinding: InitialBindins(),
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,

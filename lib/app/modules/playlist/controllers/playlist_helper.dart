@@ -1,15 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:music_player/app/core/values/gradients.dart';
-import 'package:music_player/app/data/models/playlist.dart';
-import 'package:music_player/app/widgets/dialog_input.dart';
 
 import 'package:on_audio_query/on_audio_query.dart';
 
+import '../../../data/models/playlist.dart';
+import '../../../widgets/dialog_input.dart';
 import '../widgets/playlist_tile.dart';
 
 class PlaylistHelper {
@@ -25,9 +24,9 @@ class PlaylistHelper {
             autofocus: true,
             onConform: (name) {
               if (_playlistExist(name)) {
-                Get.snackbar('Playlist Already Exist', '',
-                    backgroundGradient: Gradients.error,
-                    animationDuration: const Duration(milliseconds: 300));
+                Fluttertoast.showToast(
+                    msg: 'Playlist Already Exist',
+                    backgroundColor: Colors.red.withOpacity(0.8));
                 return;
               }
               box.add(Playlist(name: name));
@@ -48,9 +47,9 @@ class PlaylistHelper {
             confirmText: 'Rename',
             onConform: (name) {
               if (_playlistExist(name)) {
-                Get.snackbar('Playlist Already Exist', '',
-                    backgroundGradient: Gradients.error,
-                    animationDuration: const Duration(milliseconds: 300));
+                Fluttertoast.showToast(
+                    msg: 'Playlist Already Exist',
+                    backgroundColor: Colors.red.withOpacity(0.8));
                 return;
               }
               playlist.name = name;
@@ -123,22 +122,15 @@ class PlaylistHelper {
                                               if (playlists[index]
                                                   .addSong(song)) {
                                                 Navigator.pop(context);
-                                                Get.snackbar(
-                                                    'Added to ${playlists[index].name}',
-                                                    '',
-                                                    backgroundGradient:
-                                                        Gradients.success,
-                                                    animationDuration:
-                                                        const Duration(
-                                                            milliseconds: 300));
+                                                Fluttertoast.showToast(
+                                                  msg:
+                                                      'Added to ${playlists[index].name}',
+                                                );
                                               } else {
-                                                Get.snackbar(
-                                                    'Song Already Exist', '',
-                                                    backgroundGradient:
-                                                        Gradients.error,
-                                                    animationDuration:
-                                                        const Duration(
-                                                            milliseconds: 300));
+                                                Fluttertoast.showToast(
+                                                    msg: 'Song Already Exist',
+                                                    backgroundColor: Colors.red
+                                                        .withOpacity(0.8));
                                               }
                                             },
                                           );
