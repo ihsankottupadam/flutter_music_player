@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:rxdart/rxdart.dart' as rx_dart;
@@ -77,7 +78,16 @@ class PlayerController extends GetxController {
     List<AudioSource> audioSorce = [];
 
     for (SongModel song in songs) {
-      audioSorce.add(AudioSource.uri(Uri.parse(song.uri!)));
+      audioSorce.add(AudioSource.uri(
+        Uri.parse(song.uri!),
+        tag: MediaItem(
+          id: '${song.id}',
+          album: '${song.album}',
+          title: song.title,
+          artUri: Uri.parse(
+              'content://media/external/audio/media/${song.id}/albumart'),
+        ),
+      ));
     }
     return ConcatenatingAudioSource(children: audioSorce);
   }

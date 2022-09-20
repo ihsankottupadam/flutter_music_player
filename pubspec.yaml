@@ -24,6 +24,7 @@ dependencies:
   sleek_circular_slider: ^2.0.1
   fluttertoast: ^8.0.9
   url_launcher: ^6.1.5
+  just_audio_background: ^0.0.1-beta.7
 
 
 dev_dependencies: 
