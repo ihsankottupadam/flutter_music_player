@@ -16,9 +16,7 @@ class SearchView extends GetView<SearchController> {
   Widget build(BuildContext context) {
     return BgContainer(
       child: Scaffold(
-          backgroundColor: Colors.transparent,
           appBar: AppBar(
-            backgroundColor: Colors.transparent,
             title: CupertinoSearchTextField(
               itemColor: Colors.white,
               style: const TextStyle(color: Colors.white),
@@ -26,7 +24,6 @@ class SearchView extends GetView<SearchController> {
               autofocus: true,
               onChanged: (val) => controller.search(val),
             ),
-            centerTitle: true,
           ),
           body: Obx(
             () {

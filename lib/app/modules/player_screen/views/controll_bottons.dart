@@ -1,15 +1,14 @@
-import 'dart:async';
 
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:marquee/marquee.dart';
-import 'package:music_player/app/core/values/colors.dart';
-import 'package:music_player/app/modules/player_screen/controllers/timer_controller.dart';
+
 import 'package:music_player/app/modules/player_screen/views/timer.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
+import '../../../../core/values/colors.dart';
 import '../../../routes/app_pages.dart';
 import '../../playlist/controllers/playlist_helper.dart';
 import '../../../data/models/position_data.dart';

@@ -28,12 +28,11 @@ class InputDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     tController.text = initialValue ?? '';
     return AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       title: Text(title),
-      titleTextStyle: Theme.of(context)
-          .textTheme
-          .titleMedium!
-          .copyWith(fontWeight: FontWeight.bold),
+      titleTextStyle: Theme.of(context).textTheme.titleMedium!.copyWith(
+          fontWeight: FontWeight.bold,
+          color: Theme.of(context).colorScheme.secondary),
       content: TextFormField(
           controller: tController,
           maxLength: 20,

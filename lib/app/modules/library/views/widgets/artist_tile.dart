@@ -2,17 +2,17 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:music_player/app/core/values/colors.dart';
-import 'package:music_player/app/modules/album_screen/views/album_screen_view.dart';
-import 'package:music_player/app/widgets/mini_playbutton.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-import '../modules/library/controllers/library_controller.dart';
-import '../modules/player_screen/controllers/player_controller.dart';
+import '../../../../../core/values/colors.dart';
+import '../../../album_screen/views/album_screen_view.dart';
+import '../../controllers/library_controller.dart';
+import '../../../player_screen/controllers/player_controller.dart';
+import '../../../../widgets/mini_playbutton.dart';
 
-class AlbumTile extends StatelessWidget {
-  const AlbumTile({Key? key, required this.album}) : super(key: key);
-  final AlbumModel album;
+class ArtistTile extends StatelessWidget {
+  const ArtistTile({Key? key, required this.artistModel}) : super(key: key);
+  final ArtistModel artistModel;
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -21,8 +21,8 @@ class AlbumTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => AlbumScreenView(
-                  AudiosFromType.ALBUM_ID, album.id, album.album)));
+              builder: (contxt) => AlbumScreenView(AudiosFromType.ARTIST_ID,
+                  artistModel.id, artistModel.artist)));
         },
         child: GridTile(
           footer: Padding(
@@ -44,9 +44,9 @@ class AlbumTile extends StatelessWidget {
                   ),
                   child: GridTileBar(
                     backgroundColor: const Color(0x22000000),
-                    title: Text(album.album),
+                    title: Text(artistModel.artist),
                     subtitle: Text(
-                      '${album.numOfSongs} Songs',
+                      '${artistModel.numberOfTracks} Songs',
                       style: TextStyle(
                           fontSize: 12, color: Colors.white.withOpacity(0.5)),
                     ),
@@ -54,7 +54,8 @@ class AlbumTile extends StatelessWidget {
                       onPress: () async {
                         final songs = await Get.find<LibraryController>()
                             .audioQuery
-                            .queryAudiosFrom(AudiosFromType.ALBUM_ID, album.id);
+                            .queryAudiosFrom(
+                                AudiosFromType.ARTIST_ID, artistModel.id);
                         Get.find<PlayerController>().playSongs(songs);
                       },
                     ),
@@ -64,7 +65,7 @@ class AlbumTile extends StatelessWidget {
             ),
           ),
           child: QueryArtworkWidget(
-            id: album.id,
+            id: artistModel.id,
             type: ArtworkType.ALBUM,
             artworkFit: BoxFit.cover,
             artworkBorder: BorderRadius.circular(0),
@@ -79,7 +80,7 @@ class AlbumTile extends StatelessWidget {
                 color: const Color(0x22000000),
               ),
               child: const Icon(
-                Icons.album,
+                Icons.person,
                 color: MyColors.secondary,
                 size: 50,
               ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_player/app/data/models/playlist.dart';
 import 'package:music_player/app/modules/home/bindings/initial_bindings.dart';
+import 'package:music_player/core/theme/app_theme.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive/hive.dart';
 
@@ -17,10 +18,7 @@ void main() async {
   runApp(
     GetMaterialApp(
       title: "Music Player",
-      theme: ThemeData(
-          brightness: Brightness.dark,
-          textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(primary: const Color(0xff64fed4)))),
+      theme: AppTheme.theme,
       initialBinding: InitialBindins(),
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,

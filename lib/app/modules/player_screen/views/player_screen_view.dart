@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:music_player/app/routes/app_pages.dart';
 import 'package:music_player/app/widgets/bg_container.dart';
-import 'package:music_player/app/widgets/dialog_details.dart';
+import 'package:music_player/app/modules/player_screen/views/widgets/dialog_details.dart';
 import 'package:we_slide/we_slide.dart';
 
 import '../../../widgets/mypopupmenu.dart';
@@ -63,6 +64,7 @@ class PlayerScreenView extends GetWidget<PlayerController> {
           MyPopupItem(id: 0, title: 'Play All', icon: Icons.play_arrow_rounded),
           MyPopupItem(
               id: 1, title: 'Song info', icon: Icons.info_outline_rounded),
+          MyPopupItem(id: 2, title: 'Settings', icon: Icons.settings)
         ],
         onItemSelected: (id) {
           switch (id) {
@@ -75,6 +77,9 @@ class PlayerScreenView extends GetWidget<PlayerController> {
                   context: context,
                   builder: (context) => SongDetailDialog(
                       song: Get.find<PlayerController>().currentSong.value));
+              break;
+            case 2:
+              Get.toNamed(Routes.SETTINGS);
               break;
             default:
           }

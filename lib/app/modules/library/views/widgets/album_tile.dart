@@ -2,26 +2,27 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:music_player/app/core/values/colors.dart';
-import 'package:music_player/app/widgets/mini_playbutton.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-import '../modules/album_screen/views/album_screen_view.dart';
-import '../modules/library/controllers/library_controller.dart';
-import '../modules/player_screen/controllers/player_controller.dart';
+import '../../../../../core/values/colors.dart';
+import '../../../../widgets/mini_playbutton.dart';
+import '../../../album_screen/views/album_screen_view.dart';
+import '../../controllers/library_controller.dart';
+import '../../../player_screen/controllers/player_controller.dart';
 
-class GenreTile extends StatelessWidget {
-  const GenreTile({Key? key, required this.genre}) : super(key: key);
-  final GenreModel genre;
+class AlbumTile extends StatelessWidget {
+  const AlbumTile({Key? key, required this.album}) : super(key: key);
+  final AlbumModel album;
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: InkWell(
+        borderRadius: BorderRadius.circular(10),
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (contxt) => AlbumScreenView(
-                  AudiosFromType.GENRE_ID, genre.id, genre.genre)));
+              builder: (context) => AlbumScreenView(
+                  AudiosFromType.ALBUM_ID, album.id, album.album)));
         },
         child: GridTile(
           footer: Padding(
@@ -42,10 +43,10 @@ class GenreTile extends StatelessWidget {
                     ),
                   ),
                   child: GridTileBar(
-                    backgroundColor: const Color(0x11000000),
-                    title: Text(genre.genre),
+                    backgroundColor: const Color(0x22000000),
+                    title: Text(album.album),
                     subtitle: Text(
-                      '${genre.numOfSongs} Songs',
+                      '${album.numOfSongs} Songs',
                       style: TextStyle(
                           fontSize: 12, color: Colors.white.withOpacity(0.5)),
                     ),
@@ -53,7 +54,7 @@ class GenreTile extends StatelessWidget {
                       onPress: () async {
                         final songs = await Get.find<LibraryController>()
                             .audioQuery
-                            .queryAudiosFrom(AudiosFromType.GENRE_ID, genre.id);
+                            .queryAudiosFrom(AudiosFromType.ALBUM_ID, album.id);
                         Get.find<PlayerController>().playSongs(songs);
                       },
                     ),
@@ -63,7 +64,7 @@ class GenreTile extends StatelessWidget {
             ),
           ),
           child: QueryArtworkWidget(
-            id: genre.id,
+            id: album.id,
             type: ArtworkType.ALBUM,
             artworkFit: BoxFit.cover,
             artworkBorder: BorderRadius.circular(0),
@@ -78,7 +79,7 @@ class GenreTile extends StatelessWidget {
                 color: const Color(0x22000000),
               ),
               child: const Icon(
-                Icons.music_note,
+                Icons.album,
                 color: MyColors.secondary,
                 size: 50,
               ),

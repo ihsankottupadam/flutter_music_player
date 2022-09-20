@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:music_player/app/core/values/colors.dart';
 
-import 'package:music_player/app/modules/home/controllers/home_controller.dart';
+import '../../../../core/values/colors.dart';
+import '../controllers/home_controller.dart';
 
 class BottomBar extends GetWidget<HomeController> {
   const BottomBar({Key? key}) : super(key: key);

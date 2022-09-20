@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:music_player/app/core/values/colors.dart';
 import 'package:music_player/app/modules/library/controllers/library_controller.dart';
 import 'package:music_player/app/modules/player_screen/controllers/player_controller.dart';
-import 'package:music_player/app/widgets/album_tile.dart';
-import 'package:music_player/app/widgets/artist_tile.dart';
+import 'package:music_player/app/modules/library/views/widgets/album_tile.dart';
+import 'package:music_player/app/modules/library/views/widgets/artist_tile.dart';
 import 'package:music_player/app/widgets/empty_view.dart';
-import 'package:music_player/app/widgets/genres_tile.dart';
+import 'package:music_player/app/modules/library/views/widgets/genres_tile.dart';
 import 'package:music_player/app/widgets/song_tile.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-import '../../../widgets/empty_songs.dart';
+import '../../../../core/values/colors.dart';
+import 'widgets/empty_songs.dart';
 
 class SongsTab extends GetWidget<LibraryController> {
   const SongsTab({Key? key, required this.query, this.isMainTab = false})

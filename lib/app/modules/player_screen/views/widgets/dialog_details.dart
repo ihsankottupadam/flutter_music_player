@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:music_player/app/core/utils/utils.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+
+import '../../../../../core/utils/utils.dart';
 
 class SongDetailDialog extends StatelessWidget {
   const SongDetailDialog({Key? key, required this.song}) : super(key: key);
@@ -12,10 +13,7 @@ class SongDetailDialog extends StatelessWidget {
       actions: [
         TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
-              'Cancel',
-              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-            ))
+            child: const Text('Cancel'))
       ],
       title: Text(
         'Song Info',

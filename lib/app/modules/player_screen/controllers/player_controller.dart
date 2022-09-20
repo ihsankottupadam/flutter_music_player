@@ -4,15 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:music_player/app/modules/player_screen/controllers/timer_controller.dart';
+
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:rxdart/rxdart.dart' as rx_dart;
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:we_slide/we_slide.dart';
 
+import '../../../../core/utils/utils.dart';
 import '../../../controllers/ui_controller.dart';
-import '../../../core/utils/utils.dart';
+
 import '../../../data/models/position_data.dart';
+import 'timer_controller.dart';
 
 class PlayerController extends GetxController {
   final AudioPlayer player = AudioPlayer();

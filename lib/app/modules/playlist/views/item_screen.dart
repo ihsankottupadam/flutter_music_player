@@ -8,7 +8,7 @@ import 'package:music_player/app/widgets/bg_container.dart';
 import 'package:music_player/app/widgets/song_tile.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-import '../../../widgets/empty_songs.dart';
+import '../../library/views/widgets/empty_songs.dart';
 import '../../player_screen/controllers/player_controller.dart';
 
 class PlaylistItemScreen extends StatelessWidget {

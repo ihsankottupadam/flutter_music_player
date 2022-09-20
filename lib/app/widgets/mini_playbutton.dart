@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:music_player/app/core/values/colors.dart';
+import '../../core/values/colors.dart';
 
 class MiniPlayButton extends StatelessWidget {
   const MiniPlayButton({Key? key, required this.onPress}) : super(key: key);

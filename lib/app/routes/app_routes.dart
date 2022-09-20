@@ -11,6 +11,7 @@ abstract class Routes {
   static const ALBUM_SCREEN = _Paths.ALBUM_SCREEN;
   static const SEARCH = _Paths.SEARCH;
   static const QUEUE = _Paths.QUEUE;
+  static const SETTINGS = _Paths.SETTINGS;
 }
 
 abstract class _Paths {
@@ -21,4 +22,5 @@ abstract class _Paths {
   static const ALBUM_SCREEN = '/album-screen';
   static const SEARCH = '/search';
   static const QUEUE = '/queue';
+  static const SETTINGS = '/settings';
 }

@@ -10,6 +10,8 @@ import '../modules/queue/bindings/queue_binding.dart';
 import '../modules/queue/views/queue_view.dart';
 import '../modules/search/bindings/search_binding.dart';
 import '../modules/search/views/search_view.dart';
+import '../modules/settings/bindings/settings_binding.dart';
+import '../modules/settings/views/settings_view.dart';
 
 // ignore_for_file: constant_identifier_names
 
@@ -45,6 +47,11 @@ class AppPages {
       name: _Paths.QUEUE,
       page: () => QueueView(),
       binding: QueueBinding(),
+    ),
+    GetPage(
+      name: _Paths.SETTINGS,
+      page: () => const SettingsView(),
+      binding: SettingsBinding(),
     ),
   ];
 }
