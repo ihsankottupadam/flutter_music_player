@@ -26,6 +26,7 @@ class PlaylistHelper {
               if (_playlistExist(name)) {
                 Fluttertoast.showToast(
                     msg: 'Playlist Already Exist',
+                    gravity: ToastGravity.TOP,
                     backgroundColor: Colors.red.withOpacity(0.8));
                 return;
               }
@@ -49,6 +50,7 @@ class PlaylistHelper {
               if (_playlistExist(name)) {
                 Fluttertoast.showToast(
                     msg: 'Playlist Already Exist',
+                    gravity: ToastGravity.TOP,
                     backgroundColor: Colors.red.withOpacity(0.8));
                 return;
               }

@@ -26,7 +26,7 @@ Artist:  ${song.artist}
 
 Album:  ${song.album}
 
-Composer:  ${song.composer}
+Composer:  ${song.composer ?? 'Unknown'}
 
 Size : ${Utils.getFileSizeString(bytes: song.size, decimals: 2)}'''),
     );
