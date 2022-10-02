@@ -1,5 +1,3 @@
-
-import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
@@ -10,6 +8,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../../core/values/colors.dart';
 import '../../../routes/app_pages.dart';
+import '../../../widgets/player_seekbar.dart';
 import '../../playlist/controllers/playlist_helper.dart';
 import '../../../data/models/position_data.dart';
 import '../../../widgets/favorite_button.dart';
@@ -104,17 +103,9 @@ class ControllButtons extends GetWidget<PlayerController> {
               stream: controller.positionDataStream,
               builder: (context, snapshot) {
                 PositionData? positionData = snapshot.data;
-                return ProgressBar(
-                  progress: positionData?.position ?? Duration.zero,
-                  buffered: positionData?.bufferedPosition,
-                  total: positionData?.duration ?? Duration.zero,
-                  progressBarColor: cColor,
-                  thumbColor: Colors.white,
-                  baseBarColor: const Color(0x33ffffff),
-                  bufferedBarColor: Colors.transparent,
-                  barHeight: 4,
-                  thumbRadius: 6,
-                  thumbGlowRadius: 15,
+                return PlayerProgressBar(
+                  position: positionData?.position ?? Duration.zero,
+                  duration: positionData?.duration ?? Duration.zero,
                   onSeek: (duration) {
                     player.seek(duration);
                   },

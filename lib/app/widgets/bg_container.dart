@@ -19,14 +19,18 @@ class BgContainer extends StatelessWidget {
           duration: const Duration(seconds: 1),
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                _controller.curDominantColor.value,
-                const Color(0x331473e9),
-                const Color(0x330E2485),
-              ],
-            ),
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  _controller.curDominantColor.value,
+                  const Color(0x331473e9),
+                  const Color(0x330E2485),
+                ],
+                stops: const [
+                  0,
+                  0.8,
+                  1
+                ]),
           ),
           child: child,
         ),

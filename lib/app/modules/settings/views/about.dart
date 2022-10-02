@@ -37,7 +37,7 @@ class AboutScreen extends StatelessWidget {
                   Image.asset('assets/images/app_icon.png',
                       width: iconSize, height: iconSize),
                   const SizedBox(height: 15),
-                  const Text('Version 1.0.0'),
+                  const Text('Version 1.0.1'),
                   const SizedBox(height: 15),
                   RichText(
                       text: TextSpan(
@@ -71,7 +71,7 @@ class AboutScreen extends StatelessWidget {
       context: context,
       applicationIcon:
           Image.asset('assets/images/app_icon.png', width: 60, height: 60),
-      applicationVersion: 'Version 1.0.0',
+      applicationVersion: 'Version 1.0.1',
     );
   }
 

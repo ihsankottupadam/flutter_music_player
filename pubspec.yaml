@@ -1,5 +1,5 @@
 name: music_player
-version: 1.0.0+1
+version: 1.0.1+2
 publish_to: none
 description: A new Flutter project.
 environment: 
@@ -16,7 +16,6 @@ dependencies:
   just_audio: ^0.9.28
   mini_music_visualizer: ^1.0.2
   rxdart: ^0.27.5
-  audio_video_progress_bar: ^0.10.0
   marquee: ^2.2.3
   hive: ^2.2.3
   hive_flutter: ^1.1.0
