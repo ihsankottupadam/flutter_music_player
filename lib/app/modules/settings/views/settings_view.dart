@@ -38,7 +38,7 @@ class SettingsView extends GetView<SettingsController> {
               const SettingsTile(
                 icon: Icons.memory,
                 title: 'Version',
-                description: 'V1.0.1',
+                description: 'V1.0.2',
               ),
             ],
           ),

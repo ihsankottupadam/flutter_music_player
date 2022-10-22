@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,7 +14,7 @@ class ArtWidget extends GetWidget<PlayerController> {
   final double height;
   @override
   Widget build(BuildContext context) {
-    return Flexible(
+    return Expanded(
         child: SizedBox(
       height: height * 1.2,
       child: Column(
@@ -119,9 +117,12 @@ class ArtWidget extends GetWidget<PlayerController> {
                           }),
                     ),
                   ),
-                  Obx(() => Visibility(
-                      visible: controller.volDragging.value,
-                      child: VolumeBar(heiht: height * .7))),
+                  SizedBox(
+                    height: height * .7,
+                    child: Obx(() => Visibility(
+                        visible: controller.volDragging.value,
+                        child: const VolumeBar())),
+                  ),
                 ],
               );
             });
