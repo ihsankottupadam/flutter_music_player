@@ -32,6 +32,7 @@ class PlayerController extends GetxController {
   int get currentIndex => _currentIndex;
   bool get hasPlaylist => songQueue.isNotEmpty;
   final int defSkip = 10000;
+  final RxBool volDragging = false.obs;
   @override
   void onInit() {
     super.onInit();
