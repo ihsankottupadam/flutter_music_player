@@ -31,7 +31,7 @@ class PlayerController extends GetxController {
   bool isLoaded = false;
   int get currentIndex => _currentIndex;
   bool get hasPlaylist => songQueue.isNotEmpty;
-
+  final int defSkip = 10000;
   @override
   void onInit() {
     super.onInit();
@@ -69,6 +69,20 @@ class PlayerController extends GetxController {
     player.play();
     update();
     if (showPanel) Get.find<WeSlideController>().show();
+  }
+
+  void skipForward() {
+    var skipDuration = player.position.inMilliseconds + defSkip;
+    int duartion = player.duration?.inMilliseconds ?? 0;
+    if (skipDuration < duartion) {
+      player.seek(Duration(milliseconds: skipDuration));
+    }
+  }
+
+  void skipBackward() {
+    var skipDuration = player.position.inMilliseconds - defSkip;
+    if (skipDuration < 0) skipDuration = 0;
+    player.seek(Duration(milliseconds: skipDuration));
   }
 
   //functions for updating songQueue
