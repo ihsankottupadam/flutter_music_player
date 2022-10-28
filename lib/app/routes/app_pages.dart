@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/equalizer/bindings/equalizer_binding.dart';
+import '../modules/equalizer/views/equalizer_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/library/bindings/library_binding.dart';
@@ -52,6 +54,11 @@ class AppPages {
       name: _Paths.SETTINGS,
       page: () => const SettingsView(),
       binding: SettingsBinding(),
+    ),
+    GetPage(
+      name: _Paths.EQUALIZER,
+      page: () => const EqualizerView(),
+      binding: EqualizerBinding(),
     ),
   ];
 }

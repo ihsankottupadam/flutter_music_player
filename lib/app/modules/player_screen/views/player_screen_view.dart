@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:music_player/app/modules/equalizer/views/eq_example.dart';
 import 'package:music_player/app/routes/app_pages.dart';
 import 'package:music_player/app/widgets/bg_container.dart';
 import 'package:music_player/app/modules/player_screen/views/widgets/dialog_details.dart';
 import 'package:we_slide/we_slide.dart';
 
 import '../../../widgets/mypopupmenu.dart';
+import '../../equalizer/controllers/equalizer_controller.dart';
 import '../../library/controllers/library_controller.dart';
 import '../controllers/player_controller.dart';
 import 'art_widget.dart';
@@ -32,7 +34,15 @@ class PlayerScreenView extends GetWidget<PlayerController> {
                 },
                 icon: const Icon(Icons.keyboard_arrow_down_rounded),
                 tooltip: 'Back'),
-            actions: [_buldMenu(context)],
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Get.put<EqualizerController>(EqualizerController());
+                    Get.toNamed(Routes.EQUALIZER);
+                  },
+                  icon: const Icon(Icons.equalizer_sharp)),
+              _buldMenu(context)
+            ],
           ),
           body: LayoutBuilder(
             builder: (context, constraints) {

@@ -33,6 +33,7 @@ class PlayerController extends GetxController {
   bool get hasPlaylist => songQueue.isNotEmpty;
   final int defSkip = 10000;
   final RxBool volDragging = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -117,6 +118,10 @@ class PlayerController extends GetxController {
     playlist.add(createPlaylist([song]));
     update();
     Fluttertoast.showToast(msg: 'Song added to queue');
+  }
+
+  getSessionId() {
+    return player.androidAudioSessionId;
   }
 
   addSongsToQueue(List<SongModel> songs) {

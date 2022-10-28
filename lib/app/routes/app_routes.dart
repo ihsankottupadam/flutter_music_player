@@ -12,6 +12,7 @@ abstract class Routes {
   static const SEARCH = _Paths.SEARCH;
   static const QUEUE = _Paths.QUEUE;
   static const SETTINGS = _Paths.SETTINGS;
+  static const EQUALIZER = _Paths.EQUALIZER;
 }
 
 abstract class _Paths {
@@ -23,4 +24,5 @@ abstract class _Paths {
   static const SEARCH = '/search';
   static const QUEUE = '/queue';
   static const SETTINGS = '/settings';
+  static const EQUALIZER = '/equalizer';
 }

@@ -1,5 +1,5 @@
 name: music_player
-version: 1.0.2+3
+version: 1.0.2+4
 publish_to: none
 description: A new Flutter project.
 environment: 
@@ -24,6 +24,10 @@ dependencies:
   fluttertoast: ^8.0.9
   url_launcher: ^6.1.5
   just_audio_background: ^0.0.1-beta.7
+  equalizer_flutter: ^0.0.1
+  flutter_custom_slider:
+    path: packages/flutter_custom_slider
+
 
 
 dev_dependencies: 
