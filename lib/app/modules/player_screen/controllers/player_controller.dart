@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:music_player/app/data/models/song_lyrics.dart';
+import 'package:music_player/app/data/services/lyric_service.dart';
 
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:rxdart/rxdart.dart' as rx_dart;
@@ -33,6 +36,8 @@ class PlayerController extends GetxController {
   bool get hasPlaylist => songQueue.isNotEmpty;
   final int defSkip = 10000;
   final RxBool volDragging = false.obs;
+  SongLyricsModel? songLyrics;
+
   @override
   void onInit() {
     super.onInit();
@@ -160,5 +165,13 @@ class PlayerController extends GetxController {
     } else {
       uiController.setToDefaultColor();
     }
+  }
+
+  //lyrics
+  serchLyrics() async {
+    songLyrics = SongLyricsModel(songId: currentSongId.value);
+    String? lyrics = await LyricService().searchLyrics(currentSong.value.title);
+    songLyrics!.lyrics = lyrics ?? 'empty';
+    log(songLyrics!.lyrics!);
   }
 }

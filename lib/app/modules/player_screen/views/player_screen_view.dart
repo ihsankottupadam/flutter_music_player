@@ -32,7 +32,14 @@ class PlayerScreenView extends GetWidget<PlayerController> {
                 },
                 icon: const Icon(Icons.keyboard_arrow_down_rounded),
                 tooltip: 'Back'),
-            actions: [_buldMenu(context)],
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    controller.serchLyrics();
+                  },
+                  icon: const Icon(Icons.lyrics)),
+              _buldMenu(context)
+            ],
           ),
           body: LayoutBuilder(
             builder: (context, constraints) {
