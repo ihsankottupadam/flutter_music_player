@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:marquee/marquee.dart';
-
-import 'package:music_player/app/modules/player_screen/views/timer.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../../core/values/colors.dart';
@@ -13,6 +11,7 @@ import '../../playlist/controllers/playlist_helper.dart';
 import '../../../data/models/position_data.dart';
 import '../../../widgets/favorite_button.dart';
 import '../controllers/player_controller.dart';
+import 'timer.dart';
 
 class ControllButtons extends GetWidget<PlayerController> {
   const ControllButtons({Key? key}) : super(key: key);
@@ -21,132 +20,130 @@ class ControllButtons extends GetWidget<PlayerController> {
   @override
   Widget build(BuildContext context) {
     var player = controller.player;
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            StreamBuilder<SongModel>(
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          StreamBuilder<SongModel>(
+              stream: controller.currentSong.stream,
+              builder: (context, snapshot) {
+                if (!controller.hasPlaylist) {
+                  return const SizedBox();
+                }
+                final currSong = controller.currentSong.value;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                        height: 50,
+                        child: Marquee(
+                          text: currSong.title,
+                          fadingEdgeEndFraction: 0.1,
+                          fadingEdgeStartFraction: 0.1,
+                          blankSpace: 30,
+                          pauseAfterRound: const Duration(seconds: 3),
+                          startAfter: const Duration(seconds: 3),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 18),
+                        )),
+                    Text(
+                      currSong.album ?? 'unknown',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: Colors.white.withOpacity(0.7)),
+                    )
+                  ],
+                );
+              }),
+
+          //controlls
+          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+            Obx(() {
+              bool isTimerEnable = controller.timerController.enabled.value;
+              return IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) => const TimerDialog());
+                },
+                icon: Icon(
+                  Icons.timer_sharp,
+                  color: isTimerEnable ? MyColors.secondary : Colors.white,
+                ),
+                tooltip: 'Timer',
+              );
+            }),
+            IconButton(
+              onPressed: () => Get.toNamed(Routes.QUEUE),
+              icon: const Icon(Icons.queue_music),
+              tooltip: 'Add to Queue',
+            ),
+            IconButton(
+              onPressed: () => PlaylistHelper()
+                  .showPlayistaddBottomSheet(controller.currentSong.value),
+              icon: const Icon(Icons.playlist_add),
+              tooltip: 'Add to playlist',
+            ),
+            StreamBuilder(
                 stream: controller.currentSong.stream,
                 builder: (context, snapshot) {
                   if (!controller.hasPlaylist) {
-                    return const SizedBox();
+                    return const Icon(Icons.favorite);
                   }
-                  final currSong = controller.currentSong.value;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                          height: 50,
-                          child: Marquee(
-                            text: currSong.title,
-                            fadingEdgeEndFraction: 0.1,
-                            fadingEdgeStartFraction: 0.1,
-                            blankSpace: 30,
-                            pauseAfterRound: const Duration(seconds: 3),
-                            startAfter: const Duration(seconds: 3),
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 18),
-                          )),
-                      Text(
-                        currSong.album ?? 'unknown',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(color: Colors.white.withOpacity(0.7)),
-                      )
-                    ],
+                  return FavoriteButton(
+                    song: controller.currentSong.value,
                   );
-                }),
-
-            //controlls
-            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-              Obx(() {
-                bool isTimerEnable = controller.timerController.enabled.value;
-                return IconButton(
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) => const TimerDialog());
-                  },
-                  icon: Icon(
-                    Icons.timer_sharp,
-                    color: isTimerEnable ? MyColors.secondary : Colors.white,
-                  ),
-                  tooltip: 'Timer',
-                );
-              }),
-              IconButton(
-                onPressed: () => Get.toNamed(Routes.QUEUE),
-                icon: const Icon(Icons.queue_music),
-                tooltip: 'Add to Queue',
+                })
+          ]),
+          //seekbar
+          StreamBuilder<PositionData>(
+            stream: controller.positionDataStream,
+            builder: (context, snapshot) {
+              PositionData? positionData = snapshot.data;
+              return PlayerProgressBar(
+                position: positionData?.position ?? Duration.zero,
+                duration: positionData?.duration ?? Duration.zero,
+                onSeek: (duration) {
+                  player.seek(duration);
+                },
+              );
+            },
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              StreamBuilder<bool>(
+                stream: player.shuffleModeEnabledStream,
+                builder: (context, snapshot) =>
+                    _shuffleButton(context, snapshot.data ?? false),
               ),
-              IconButton(
-                onPressed: () => PlaylistHelper()
-                    .showPlayistaddBottomSheet(controller.currentSong.value),
-                icon: const Icon(Icons.playlist_add),
-                tooltip: 'Add to playlist',
+              StreamBuilder<SequenceState?>(
+                stream: player.sequenceStateStream,
+                builder: (_, __) {
+                  return _previousButton();
+                },
               ),
-              StreamBuilder(
-                  stream: controller.currentSong.stream,
-                  builder: (context, snapshot) {
-                    if (!controller.hasPlaylist) {
-                      return const Icon(Icons.favorite);
-                    }
-                    return FavoriteButton(
-                      song: controller.currentSong.value,
-                    );
-                  })
-            ]),
-            //seekbar
-            StreamBuilder<PositionData>(
-              stream: controller.positionDataStream,
-              builder: (context, snapshot) {
-                PositionData? positionData = snapshot.data;
-                return PlayerProgressBar(
-                  position: positionData?.position ?? Duration.zero,
-                  duration: positionData?.duration ?? Duration.zero,
-                  onSeek: (duration) {
-                    player.seek(duration);
-                  },
-                );
-              },
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                StreamBuilder<bool>(
-                  stream: player.shuffleModeEnabledStream,
+              StreamBuilder<PlayerState>(
+                stream: player.playerStateStream,
+                builder: (_, snapshot) {
+                  final playerState = snapshot.data;
+                  return _playButton(playerState);
+                },
+              ),
+              StreamBuilder<SequenceState?>(
+                stream: player.sequenceStateStream,
+                builder: (_, __) {
+                  return _nextButton();
+                },
+              ),
+              StreamBuilder<LoopMode>(
+                  stream: player.loopModeStream,
                   builder: (context, snapshot) =>
-                      _shuffleButton(context, snapshot.data ?? false),
-                ),
-                StreamBuilder<SequenceState?>(
-                  stream: player.sequenceStateStream,
-                  builder: (_, __) {
-                    return _previousButton();
-                  },
-                ),
-                StreamBuilder<PlayerState>(
-                  stream: player.playerStateStream,
-                  builder: (_, snapshot) {
-                    final playerState = snapshot.data;
-                    return _playButton(playerState);
-                  },
-                ),
-                StreamBuilder<SequenceState?>(
-                  stream: player.sequenceStateStream,
-                  builder: (_, __) {
-                    return _nextButton();
-                  },
-                ),
-                StreamBuilder<LoopMode>(
-                    stream: player.loopModeStream,
-                    builder: (context, snapshot) =>
-                        _repeatButton(context, snapshot.data ?? LoopMode.off))
-              ],
-            )
-          ],
-        ),
+                      _repeatButton(context, snapshot.data ?? LoopMode.off))
+            ],
+          )
+        ],
       ),
     );
   }

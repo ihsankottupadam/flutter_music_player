@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:music_player/app/modules/player_screen/views/bottom.dart';
 import 'package:music_player/app/routes/app_pages.dart';
 import 'package:music_player/app/widgets/bg_container.dart';
 import 'package:music_player/app/modules/player_screen/views/widgets/dialog_details.dart';
@@ -35,7 +36,7 @@ class PlayerScreenView extends GetWidget<PlayerController> {
             actions: [
               IconButton(
                   onPressed: () {
-                    controller.serchLyrics();
+                    controller.toggleLyricsView();
                   },
                   icon: const Icon(Icons.lyrics)),
               _buldMenu(context)
@@ -49,13 +50,13 @@ class PlayerScreenView extends GetWidget<PlayerController> {
                     ArtWidget(
                       height: size.height * .4,
                     ),
-                    const ControllButtons()
+                    const BottomView()
                   ],
                 );
               } else {
                 return Row(children: [
                   ArtWidget(height: size.height * 0.80),
-                  const ControllButtons()
+                  const BottomView()
                 ]);
               }
             },

@@ -25,6 +25,7 @@ dependencies:
   url_launcher: ^6.1.5
   just_audio_background: ^0.0.1-beta.7
   dio: ^4.0.6
+  flip_card: ^0.6.0
 
 
 dev_dependencies: 

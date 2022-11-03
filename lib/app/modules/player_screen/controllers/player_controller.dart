@@ -1,14 +1,11 @@
 import 'dart:async';
-import 'dart:developer';
 
+import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
-import 'package:music_player/app/data/models/song_lyrics.dart';
-import 'package:music_player/app/data/services/lyric_service.dart';
-
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:rxdart/rxdart.dart' as rx_dart;
 import 'package:carousel_slider/carousel_controller.dart';
@@ -16,8 +13,8 @@ import 'package:we_slide/we_slide.dart';
 
 import '../../../../core/utils/utils.dart';
 import '../../../controllers/ui_controller.dart';
-
 import '../../../data/models/position_data.dart';
+import 'lyrics_controller.dart';
 import 'timer_controller.dart';
 
 class PlayerController extends GetxController {
@@ -31,12 +28,13 @@ class PlayerController extends GetxController {
   RxInt currentSongId = 0.obs;
   RxBool showMiniPlayer = false.obs;
   final carouselController = CarouselController();
+  final flipCardController = FlipCardController();
+  final lyricsController = Get.put(LyricsController());
   bool isLoaded = false;
   int get currentIndex => _currentIndex;
   bool get hasPlaylist => songQueue.isNotEmpty;
   final int defSkip = 10000;
   final RxBool volDragging = false.obs;
-  SongLyricsModel? songLyrics;
 
   @override
   void onInit() {
@@ -167,11 +165,12 @@ class PlayerController extends GetxController {
     }
   }
 
-  //lyrics
-  serchLyrics() async {
-    songLyrics = SongLyricsModel(songId: currentSongId.value);
-    String? lyrics = await LyricService().searchLyrics(currentSong.value.title);
-    songLyrics!.lyrics = lyrics ?? 'empty';
-    log(songLyrics!.lyrics!);
+//Lyrics
+  toggleLyricsView() {
+    if (lyricsController.songId != currentSongId.value) {
+      lyricsController.getLyrics(
+          currentSongId.value, songQueue[currentIndex].title);
+    }
+    flipCardController.toggleCard();
   }
 }

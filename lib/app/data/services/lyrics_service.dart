@@ -6,9 +6,9 @@ import 'package:music_player/app/data/models/lyric_model.dart';
 import 'package:music_player/app/data/models/lyric_serch.dart';
 import 'package:music_player/core/values/api_key.dart';
 
-class LyricService {
+class LyricsService {
   late Dio dio;
-  LyricService() {
+  LyricsService() {
     dio = Dio();
     dio.options.baseUrl = 'http://api.musixmatch.com/ws/1.1/';
   }
@@ -29,13 +29,19 @@ class LyricService {
         var serchRes = lyricSerchFromJson(responce.data).message;
         if (serchRes.header.statusCode != 200 ||
             serchRes.body.trackList.isEmpty) {
-          log('No Result');
+          // log('No Result');
           return null;
         }
         var tracks = serchRes.body.trackList;
         return tracks[0].track.trackId;
       }
     } catch (e) {
+      if (e is DioError) {
+        if (e.message.startsWith('SocketException')) {
+          throw 'No Connection';
+        }
+        return null;
+      }
       log('ON TRACKID$e');
     }
     return null;
@@ -48,7 +54,7 @@ class LyricService {
       if (response.statusCode == 200) {
         var res = lyricModelFromJson(response.data);
         String lyrics = res.message.body.lyrics.lyricsBody;
-        return lyrics;
+        return lyrics.split('...').first;
       }
     } catch (e) {
       log('ON LYRICS $e');
