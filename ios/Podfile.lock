@@ -1,0 +1,77 @@
+PODS:
+  - audio_service (0.0.1):
+    - Flutter
+  - audio_session (0.0.1):
+    - Flutter
+  - Flutter (1.0.0)
+  - fluttertoast (0.0.2):
+    - Flutter
+    - Toast
+  - just_audio (0.0.1):
+    - Flutter
+  - on_audio_query_ios (0.0.1):
+    - Flutter
+    - SwiftyBeaver
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - sqflite (0.0.3):
+    - Flutter
+    - FlutterMacOS
+  - SwiftyBeaver (1.9.5)
+  - Toast (4.1.0)
+  - url_launcher_ios (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - audio_service (from `.symlinks/plugins/audio_service/ios`)
+  - audio_session (from `.symlinks/plugins/audio_session/ios`)
+  - Flutter (from `Flutter`)
+  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
+  - just_audio (from `.symlinks/plugins/just_audio/ios`)
+  - on_audio_query_ios (from `.symlinks/plugins/on_audio_query_ios/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - sqflite (from `.symlinks/plugins/sqflite/darwin`)
+  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
+
+SPEC REPOS:
+  trunk:
+    - SwiftyBeaver
+    - Toast
+
+EXTERNAL SOURCES:
+  audio_service:
+    :path: ".symlinks/plugins/audio_service/ios"
+  audio_session:
+    :path: ".symlinks/plugins/audio_session/ios"
+  Flutter:
+    :path: Flutter
+  fluttertoast:
+    :path: ".symlinks/plugins/fluttertoast/ios"
+  just_audio:
+    :path: ".symlinks/plugins/just_audio/ios"
+  on_audio_query_ios:
+    :path: ".symlinks/plugins/on_audio_query_ios/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  sqflite:
+    :path: ".symlinks/plugins/sqflite/darwin"
+  url_launcher_ios:
+    :path: ".symlinks/plugins/url_launcher_ios/ios"
+
+SPEC CHECKSUMS:
+  audio_service: f509d65da41b9521a61f1c404dd58651f265a567
+  audio_session: 4f3e461722055d21515cf3261b64c973c062f345
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  fluttertoast: 31b00dabfa7fb7bacd9e7dbee580d7a2ff4bf265
+  just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
+  on_audio_query_ios: e5afb0d4b42cfa3e8762d8ec1953540cb4f02100
+  path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
+  sqflite: 673a0e54cc04b7d6dba8d24fb8095b31c3a99eec
+  SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
+  Toast: ec33c32b8688982cecc6348adeae667c1b9938da
+  url_launcher_ios: 6116280ddcfe98ab8820085d8d76ae7449447586
+
+PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
+
+COCOAPODS: 1.15.2

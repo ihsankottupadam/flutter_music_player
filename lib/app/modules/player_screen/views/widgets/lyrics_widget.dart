@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:music_player/app/modules/player_screen/controllers/lyrics_controller.dart';
 import 'package:music_player/app/modules/player_screen/controllers/player_controller.dart';

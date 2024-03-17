@@ -8,9 +8,9 @@ import 'package:on_audio_query/on_audio_query.dart';
 import '../../../widgets/bg_container.dart';
 import '../../../widgets/song_tile.dart';
 import '../../player_screen/controllers/player_controller.dart';
-import '../controllers/search_controller.dart';
+import '../controllers/search_controller.dart' as c;
 
-class SearchView extends GetView<SearchController> {
+class SearchView extends GetView<c.SearchController> {
   const SearchView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class SearchView extends GetView<SearchController> {
           ),
           body: Obx(
             () {
-              var result = controller.results.value;
+              var result = controller.results;
               if (result.isEmpty) {
                 return const EmptyView(
                     icon: Icons.search, text: 'No Result Found');

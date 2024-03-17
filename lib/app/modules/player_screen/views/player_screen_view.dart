@@ -10,7 +10,7 @@ import '../../../widgets/mypopupmenu.dart';
 import '../../library/controllers/library_controller.dart';
 import '../controllers/player_controller.dart';
 import 'art_widget.dart';
-import 'controll_bottons.dart';
+// import 'controll_bottons.dart';
 
 class PlayerScreenView extends GetWidget<PlayerController> {
   const PlayerScreenView({Key? key}) : super(key: key);
